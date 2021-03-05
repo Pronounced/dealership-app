@@ -18,10 +18,10 @@ namespace my_new_app.Fake_Data
             for (int i = 0; i < 5; i++)
             {
                 var car = new Car();
-                car.Year = "2000";
-                car.Make = "Honda";
-                car.Model = "Civic";
-                car.Guid = Guid.NewGuid().ToString();
+                car.year = "2000";
+                car.make = "Honda";
+                car.model = "Civic";
+                car.guid = Guid.NewGuid().ToString();
                 cars.Add(car);            
             }
             return cars;
@@ -29,9 +29,10 @@ namespace my_new_app.Fake_Data
 
         static public List<Car> PostCar(string year, string make, string model){
             cars.Add(new Car(){
-                Year = year, 
-                Make = make, 
-                Model = model
+                guid = Guid.NewGuid().ToString(),
+                year = year, 
+                make = make, 
+                model = model
             });
 
             return cars;

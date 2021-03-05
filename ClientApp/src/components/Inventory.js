@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import AddInventory from './AddInventory';
 
 export class Inventory extends Component {
   static displayName = Inventory.name;
@@ -14,7 +13,7 @@ export class Inventory extends Component {
   }
 
   componentDidMount() {
-    fetch("https://localhost:5001/inventory/cars")
+    fetch("https://localhost:5001/api/inventory/")
     .then(response => response.json())
     .then(
       (result) => {
@@ -44,7 +43,6 @@ export class Inventory extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>{console.log(this.state.inventory.guid)}</tr>
             {this.state.inventory.map(i => (
               <tr key={i.guid}>
                 <td>{i.year}</td>
@@ -58,7 +56,7 @@ export class Inventory extends Component {
             })} */}
           </tbody>    
         </table>
-        <button type="button" onClick={ () => {{this.props.view("AddInventory")}}}>Add Car</button>
+        <button type="button" onClick={ () => {this.props.view("AddInventory")}}>Add Car</button>
        </div>
     );
   }

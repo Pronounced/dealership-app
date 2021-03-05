@@ -5,7 +5,7 @@ import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter'; */
 import { Inventory } from './components/Inventory';
-import AddInventory from './components/AddInventory';
+import { AddInventory } from './components/AddInventory';
 
 import './custom.css'
 
@@ -33,7 +33,7 @@ changeView = (option) => {
       )
     } else {
       return (
-        <AddInventory></AddInventory>
+        <AddInventory view={this.changeView}></AddInventory>
       )
     }
   }
