@@ -25,9 +25,7 @@ export class AddInventory extends Component{
       body: JSON.stringify(inventory)
     };
     fetch('https://localhost:5001/api/inventory/addcar', requestOptions)
-    .then(response => response.json())
-    .then(result => this.setState({guid: result}));
-    console.log(this.state.guid);
+    .then(response => response.json());
   }
 
   render() {

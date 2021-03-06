@@ -23,9 +23,9 @@ namespace my_new_app.Controllers
         } */
 
         [HttpPost("addcar")]
-        public IEnumerable<Car> Post([FromBody]Car car)
+        public void Post([FromBody]Car car)
         {
-            return Inventory.PostCar(car.year,car.make,car.model);
+            Inventory.PostCar(car.year,car.make,car.model);
         }
     }
 }
