@@ -1,45 +1,73 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+
                               
 export class AddInventory extends Component{
+  static displayName = AddInventory.name;
+
   constructor(props) {
     super(props);
     this.state = {
-      year: "",
-      make: "",
-      model: "",
-      guid: null
+      car: {
+        year: "",
+        make: "",
+        model: "",
+      },
+      redirect: false,
+      route: "AddInventory"
+    }
+  }
+
+  setRedirect = (route) => {
+    this.setState({
+      redirect: true,
+      route: route
+    })
+  }
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to= {this.state.route} />
     }
   }
 
   updateState = (event) => {
-    this.setState({
-      [event.target.name] : event.target.value
-    });
+    var car = {...this.state.car};
+    car[event.target.name] = event.target.value;
+    this.setState({car});
   }
 
-  postCar = () => {
-    var inventory = this.state;
+  postCar = (event) => {
+    event.preventDefault();
+    var car = this.state.car;
     const requestOptions = {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(inventory)
+      body: JSON.stringify(car)
     };
     fetch('https://localhost:5001/api/inventory/addcar', requestOptions)
-    .then(response => response.json());
+    .then(response => response).then(this.setRedirect("/"));
   }
 
   render() {
     return (
       <div>
+        {this.renderRedirect()}
         <form onSubmit={this.postCar}>
-          <label>Year</label>
-          <input name="year" type="text" onChange={this.updateState}></input>
-          <label>Make</label>
-          <input name="make" type="text" onChange={this.updateState}></input>
-          <label>Model</label>
-          <input name="model" type="text" onChange={this.updateState}></input>
+          <p>
+            <label>Year</label>
+            <input name="year" type="text" onChange={this.updateState}></input>
+          </p>
+          <p>
+            <label>Make</label>
+            <input name="make" type="text" onChange={this.updateState}></input>
+          </p>
+          <p>
+            <label>Model</label>
+            <input name="model" type="text" onChange={this.updateState}></input>
+          </p>
           <button type="submit">Submit</button>
-          <button type="button" onClick={() => {this.props.view("Inventory")}}>back</button>
+          <button type="button" onClick={ () => this.setRedirect("/")}>Back</button>
         </form>
       </div>
     )

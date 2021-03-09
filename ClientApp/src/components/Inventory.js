@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+//import { Route } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 export class Inventory extends Component {
   static displayName = Inventory.name;
@@ -8,7 +10,21 @@ export class Inventory extends Component {
     this.state = {
       error: null,
       isLoaded: false,
-      inventory : []
+      inventory: [],
+      redirect: false,
+      route: "Inventory"
+    }
+  }
+
+  setRedirect = (route) => {
+    this.setState({
+      redirect: true,
+      route: route
+    })
+  }
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to= {this.state.route} />
     }
   }
 
@@ -21,12 +37,6 @@ export class Inventory extends Component {
           isLoaded: true,
           inventory: result
         });
-      },
-      (error) => {
-        this.setState({
-          isLoaded: true,
-          error
-        });
       }
     )
   }
@@ -34,6 +44,7 @@ export class Inventory extends Component {
   render() {
     return (
        <div>
+        {this.renderRedirect()}
         <table>
           <thead>
             <tr>
@@ -50,13 +61,10 @@ export class Inventory extends Component {
                 <td>{i.model}</td>
               </tr>
             ))}
-
-            {/* {this.state.inventory.map(function(value, key) {
-              <tr key={}></tr>
-            })} */}
           </tbody>    
         </table>
-        <button type="button" onClick={ () => {this.props.view("AddInventory")}}>Add Car</button>
+        {/* <button type="button" onClick={ () => {this.props.changeView("AddInventory")}}>Add Car</button> */}
+        <button type="button" onClick={() => this.setRedirect("AddInventory")}>Add Car</button>
        </div>
     );
   }

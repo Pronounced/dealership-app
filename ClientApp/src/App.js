@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-/* import { Route } from 'react-router';
-import { Layout } from './components/Layout';
-import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter'; */
+import { Route } from 'react-router';
+// import { Layout } from './components/Layout';
+// import { Home } from './components/Home';
+// import { FetchData } from './components/FetchData';
+// import { Counter } from './components/Counter';
 import { Inventory } from './components/Inventory';
 import { AddInventory } from './components/AddInventory';
 
@@ -15,27 +15,38 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: "Inventory"
+      view: "Inventory",
     }
   }
 
-changeView = (option) => {
-  this.setState({
-    view: option,
-  });
-}
+  changeView = (option) => {
+    this.setState({
+      view: option,
+    });
+  }
 
-  render() {
-    if(this.state.view === "Inventory")
+  renderView() {
+    const { view } = this.state;
+    if(view === "Inventory")
     {
       return (
-        <Inventory view={this.changeView}></Inventory>
+        <Inventory changeView={this.changeView}></Inventory>
       )
     } else {
       return (
-        <AddInventory view={this.changeView}></AddInventory>
+        <AddInventory changeView={this.changeView}></AddInventory>
       )
     }
+  }
+
+  render() {
+    return (
+      <div>
+        <Route exact path='/' component={Inventory} />
+        <Route path='/AddInventory' component={AddInventory} />
+      </div>
+    )
+    //return this.renderView();
   }
 
 /*   render () {
