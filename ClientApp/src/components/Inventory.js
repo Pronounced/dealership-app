@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 //import { Route } from 'react-router';
-import { Redirect } from 'react-router-dom';
+//import { Redirect } from 'react-router-dom';
 
 export class Inventory extends Component {
   static displayName = Inventory.name;
@@ -16,17 +16,17 @@ export class Inventory extends Component {
     }
   }
 
-  setRedirect = (route) => {
-    this.setState({
-      redirect: true,
-      route: route
-    })
-  }
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to= {this.state.route} />
-    }
-  }
+  // setRedirect = (route) => {
+  //   this.setState({
+  //     redirect: true,
+  //     route: route
+  //   })
+  // }
+  // renderRedirect = () => {
+  //   if (this.state.redirect) {
+  //     return <Redirect to= {this.state.route} />
+  //   }
+  // }
 
   componentDidMount() {
     fetch("https://localhost:5001/api/inventory/")
@@ -38,13 +38,26 @@ export class Inventory extends Component {
           inventory: result
         });
       }
-    )
+    )  
   }
+
+  // componentDidUpdate() {
+  //   fetch("https://localhost:5001/api/inventory/")
+  //   .then(response => response.json())
+  //   .then(
+  //     (result) => {
+  //       this.setState({
+  //         isLoaded: true,
+  //         inventory: result
+  //       });
+  //     }
+  //   )
+  // }
 
   render() {
     return (
        <div>
-        {this.renderRedirect()}
+        {console.log("render", this.state.inventory)}
         <table>
           <thead>
             <tr>
@@ -63,8 +76,8 @@ export class Inventory extends Component {
             ))}
           </tbody>    
         </table>
-        {/* <button type="button" onClick={ () => {this.props.changeView("AddInventory")}}>Add Car</button> */}
-        <button type="button" onClick={() => this.setRedirect("AddInventory")}>Add Car</button>
+        <button type="button" onClick={ () => {this.props.changeView("AddInventory")}}>Add Car</button>
+        {/* <button type="button" onClick={() => this.setRedirect("AddInventory")}>Add Car</button> */}
        </div>
     );
   }

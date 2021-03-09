@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+//import { Redirect } from 'react-router-dom';
 
                               
 export class AddInventory extends Component{
@@ -18,18 +18,18 @@ export class AddInventory extends Component{
     }
   }
 
-  setRedirect = (route) => {
-    this.setState({
-      redirect: true,
-      route: route
-    })
-  }
+  // setRedirect = (route) => {
+  //   this.setState({
+  //     redirect: true,
+  //     route: route
+  //   })
+  // }
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to= {this.state.route} />
-    }
-  }
+  // renderRedirect = () => {
+  //   if (this.state.redirect) {
+  //     return <Redirect to= {this.state.route} />
+  //   }
+  // }
 
   updateState = (event) => {
     var car = {...this.state.car};
@@ -46,13 +46,13 @@ export class AddInventory extends Component{
       body: JSON.stringify(car)
     };
     fetch('https://localhost:5001/api/inventory/addcar', requestOptions)
-    .then(response => response).then(this.setRedirect("/"));
+    .then(response => response).then(this.props.changeView("Inventory"));
   }
 
   render() {
     return (
       <div>
-        {this.renderRedirect()}
+        {/* {this.renderRedirect()} */}
         <form onSubmit={this.postCar}>
           <p>
             <label>Year</label>
@@ -67,7 +67,8 @@ export class AddInventory extends Component{
             <input name="model" type="text" onChange={this.updateState}></input>
           </p>
           <button type="submit">Submit</button>
-          <button type="button" onClick={ () => this.setRedirect("/")}>Back</button>
+          {/* <button type="button" onClick={ () => this.setRedirect("/")}>Back</button> */}
+          <button type="button" onClick={ () => this.props.changeView("Inventory")}>Back</button>
         </form>
       </div>
     )

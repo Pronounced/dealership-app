@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace my_new_app.Models
+namespace dealership_app.Models
 {
     public class Car
     {

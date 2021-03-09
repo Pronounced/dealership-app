@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+//import { Route } from 'react-router';
 // import { Layout } from './components/Layout';
 // import { Home } from './components/Home';
 // import { FetchData } from './components/FetchData';
 // import { Counter } from './components/Counter';
 import { Inventory } from './components/Inventory';
 import { AddInventory } from './components/AddInventory';
+import Login  from './components/Login';
 
 import './custom.css'
 
@@ -15,7 +16,8 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: "Inventory",
+      view: "Login",
+      inventory: []
     }
   }
 
@@ -25,14 +27,35 @@ export default class App extends Component {
     });
   }
 
+  componentDidMount() {
+    fetch("https://localhost:5001/api/inventory/")
+    .then(response => response.json())
+    .then(
+      (result) => {
+        this.setState({
+          isLoaded: true,
+          inventory: result
+        });
+      }
+    )  
+  }
+
   renderView() {
     const { view } = this.state;
-    if(view === "Inventory")
+    if(view === "Login")
+    {
+      return(
+        <Login changeView={this.changeView}/>
+      )
+    } 
+    else if(view === "Inventory")
     {
       return (
-        <Inventory changeView={this.changeView}></Inventory>
+        <Inventory inventory={this.state.inventory} changeView={this.changeView}></Inventory>
       )
-    } else {
+    } 
+    else if(view === "AddInventory") 
+    {
       return (
         <AddInventory changeView={this.changeView}></AddInventory>
       )
@@ -40,13 +63,13 @@ export default class App extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <Route exact path='/' component={Inventory} />
-        <Route path='/AddInventory' component={AddInventory} />
-      </div>
-    )
-    //return this.renderView();
+    // return (
+    //   <div>
+    //     <Route exact path='/' component={Inventory} />
+    //     <Route path='/AddInventory' component={AddInventory} />
+    //   </div>
+    // )
+    return this.renderView();
   }
 
 /*   render () {

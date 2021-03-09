@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Text.Json;
+using dealership_app.Models;
 using Microsoft.AspNetCore.Mvc;
-using my_new_app.Fake_Data;
-using my_new_app.Models;
+using dealership_app.Fake_Data;
 
-namespace my_new_app.Controllers
+namespace dealership_app.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

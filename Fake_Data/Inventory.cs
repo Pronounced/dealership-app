@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using my_new_app.Models;
+using dealership_app.Models;
 
-namespace my_new_app.Fake_Data
+namespace dealership_app.Fake_Data
 {
     class Inventory
     {
