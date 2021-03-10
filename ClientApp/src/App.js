@@ -65,8 +65,8 @@ export default class App extends Component {
     }
   }
 
-  // componentDidUpdate(prevProps, prevState){
-  // }
+  componentDidUpdate(prevProps, prevState){
+  }
 
   render() {
     // return (
