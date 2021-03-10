@@ -8,11 +8,8 @@ export default class Login extends React.Component {
       username: "",
       password: "",
       userList: [],
-      isLogined: false
     };
   }
-  
-
 
   handleInputChange = (event) => {
     this.setState({
@@ -20,16 +17,19 @@ export default class Login extends React.Component {
       })
   }
 
-  handleSubmit = () => {
-    console.log(this.state.userList.filter(element => element.username === this.state.username).length === 1);
-    console.log(this.state.userList.filter(element => element.password === this.state.password).length === 1);
-    if((this.state.userList.filter(element => element.username === this.state.username).length === 1) && (this.state.userList.filter(element => element.password === this.state.password).length === 1))
+  handleSubmit = (event) => {
+    event.preventDefault();
+    if(!this.state.isLogined)
     {
-      this.setState({isLogined:true});
-    }
-    if(this.state.isLogined)
-    {
-      this.props.changeView("Inventory");
+      this.state.userList.map(element =>
+      {
+        if(this.state.username === element.username && this.state.password === element.password)
+        {
+          this.props.onLogChange(true);
+          this.props.changeView("Inventory");
+        }
+        return true;
+      })
     }
   }
 
@@ -49,8 +49,10 @@ export default class Login extends React.Component {
   render() {
     return (
       <div >
-        <form name="loginForm" onSubmit={this.handleSubmit}>
+        <form name="loginForm" onSubmit={this.handleSubmit} autoComplete="off">
+          <label>Username</label>
           <input name="username" type="text" onChange={this.handleInputChange}></input>
+          <label>Password</label>
           <input name="password" type="password" onChange={this.handleInputChange}></input>
           <button type="submit">Submit</button>
         </form>

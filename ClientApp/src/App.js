@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
 //import { Route } from 'react-router';
-// import { Layout } from './components/Layout';
-// import { Home } from './components/Home';
-// import { FetchData } from './components/FetchData';
-// import { Counter } from './components/Counter';
 import { Inventory } from './components/Inventory';
 import { AddInventory } from './components/AddInventory';
 import Login  from './components/Login';
@@ -17,41 +13,48 @@ export default class App extends Component {
     super(props);
     this.state = {
       view: "Login",
-      inventory: []
+      isLoggedIn: false
     }
   }
 
-  changeView = (option) => {
+  // componentDidMount(){
+  //   if(localStorage.length !== 0)
+  //   {
+  //     let isLoggedIn = localStorage.getItem('isLoggedIn');
+  //     let view = localStorage.getItem('view');
+  //     this.setState({
+  //       isLoggedIn: isLoggedIn,
+  //       view: view
+  //     });
+  //   }
+  // }
+
+  changeView = (view) => {
+    //localStorage.setItem('view', view)
     this.setState({
-      view: option,
+      view: view,
     });
   }
 
-  componentDidMount() {
-    fetch("https://localhost:5001/api/inventory/")
-    .then(response => response.json())
-    .then(
-      (result) => {
-        this.setState({
-          isLoaded: true,
-          inventory: result
-        });
-      }
-    )  
+  onLogChange = (input) => {
+    //localStorage.setItem('isLoggedIn', input);
+    this.setState({
+      isLoggedIn: input,
+    });
   }
 
   renderView() {
     const { view } = this.state;
-    if(view === "Login")
+    if(view === "Login") 
     {
       return(
-        <Login changeView={this.changeView}/>
+        <Login isLoggedIn={this.state.isLoggedIn} changeView={this.changeView} onLogChange={this.onLogChange}/>
       )
     } 
     else if(view === "Inventory")
     {
       return (
-        <Inventory inventory={this.state.inventory} changeView={this.changeView}></Inventory>
+        <Inventory view={this.state.view} changeView={this.changeView}></Inventory>
       )
     } 
     else if(view === "AddInventory") 

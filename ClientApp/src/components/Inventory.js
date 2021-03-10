@@ -6,6 +6,7 @@ export class Inventory extends Component {
   static displayName = Inventory.name;
 
   constructor(props) {
+    console.log("constructor")
     super(props);
     this.state = {
       error: null,
@@ -14,6 +15,7 @@ export class Inventory extends Component {
       redirect: false,
       route: "Inventory"
     }
+    console.log(this.state.inventory)
   }
 
   // setRedirect = (route) => {
@@ -28,36 +30,29 @@ export class Inventory extends Component {
   //   }
   // }
 
-  componentDidMount() {
+  getCars = () => {
     fetch("https://localhost:5001/api/inventory/")
     .then(response => response.json())
-    .then(
-      (result) => {
+    .then((result) => {
         this.setState({
           isLoaded: true,
           inventory: result
         });
       }
-    )  
+    )
   }
 
-  // componentDidUpdate() {
-  //   fetch("https://localhost:5001/api/inventory/")
-  //   .then(response => response.json())
-  //   .then(
-  //     (result) => {
-  //       this.setState({
-  //         isLoaded: true,
-  //         inventory: result
-  //       });
-  //     }
-  //   )
-  // }
+  componentDidMount() {
+    console.log("Mount")
+    this.getCars();
+    console.log(this.state.inventory)
+  }
 
   render() {
+    console.log("render")
+    console.log(this.state.inventory)
     return (
        <div>
-        {console.log("render", this.state.inventory)}
         <table>
           <thead>
             <tr>

@@ -20,8 +20,8 @@ namespace dealership_app.Fake_Data
             for (int i = 0; i < 5; i++)
             {
                 var user = new User();
-                user.username = $"TestUser {count++}";
-                user.email = $"TestUser{count}@test.com";
+                user.username = $"{count++}";
+                user.email = $"{count}@test.com";
                 user.password = "1";
                 user.creationdate = DateTime.Now;
                 user.updatedate = DateTime.Now;
