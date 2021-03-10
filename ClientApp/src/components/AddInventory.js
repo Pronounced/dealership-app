@@ -34,7 +34,7 @@ export class AddInventory extends Component{
               <Card style={{ width: '18rem'}}>
                 <Card.Header as="h5">Add Car</Card.Header>
                 <Card.Body>
-                  <Form>
+                  <Form onSubmit={this.handleSubmit}>
                     <Form.Group>
                       <Form.Label>Year</Form.Label>
                       <Form.Control name="year" type="text" onChange={this.handleChange}></Form.Control>

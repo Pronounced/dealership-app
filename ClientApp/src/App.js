@@ -105,18 +105,23 @@ export default class App extends Component {
     console.log("render state", this.state);
     const { showForm, inventoryData, isLoggedIn, userData, isAdmin } = this.state;
     if(!isLoggedIn) {
-      return (
-        <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} login={isLoggedIn} users={userData}/>
+      return (        
+        <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} login={isLoggedIn} users={userData}/>     
       )
     } else if (showForm)
     {
-      return(<AddInventory addCar={this.addCar} />)
+      return(
+        <div> 
+          <AddInventory addCar={this.addCar} />
+          <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
+        </div>
+      )
     } else
     {
       if(isAdmin)
       {
         return (<div>
-          <Inventory inventory={inventoryData} />
+          <Inventory handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
           <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
         </div>)
 
