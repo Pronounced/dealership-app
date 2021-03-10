@@ -10,7 +10,6 @@ export class AddInventory extends Component{
       year: "",
       make: "",
       model: "",
-      seller: ""
     }
 
   handleChange = ({target}) => {
@@ -43,9 +42,6 @@ export class AddInventory extends Component{
                       <Form.Control name="make" type="text" onChange={this.handleChange}></Form.Control>
                       <Form.Label>Model</Form.Label>
                       <Form.Control name="model" type="text" onChange={this.handleChange}></Form.Control>
-                      {this.setState({
-                        seller: this.props.currentUser
-                      })}
                       <Button type="submit">Submit</Button>
                     </Form.Group>
                   </Form>

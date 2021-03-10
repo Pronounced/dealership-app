@@ -9,6 +9,7 @@ namespace dealership_app.Models
         public string model { get; set; }
         public string guid { get; set; }
         public string seller { get; set; }
+        public bool isApproved { get; set; }
 
         public override string ToString()
         {

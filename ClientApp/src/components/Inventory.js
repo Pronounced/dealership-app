@@ -13,7 +13,8 @@ export class Inventory extends Component {
           <Navbar.Brand href="#home">Car Dealership</Navbar.Brand>
           <Nav className="mr-auto">
             {this.props.isAdmin && <Nav.Link onClick={this.props.handleAdd}>Add Car to Inventory</Nav.Link>}
-            {!this.props.isAdmin && <Nav.Link>Submit a Car</Nav.Link>}
+            {!this.props.isAdmin && <Nav.Link onClick={() => this.props.changeView("AddUserInventory")}>Submit a Car</Nav.Link>}
+            {!this.props.isAdmin && <Nav.Link onClick={() => this.props.changeView("UserInventory")}>See My Cars</Nav.Link>}
           </Nav>
         </Navbar>
         <Table striped bordered hover variant="dark">
@@ -25,7 +26,7 @@ export class Inventory extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.inventory && this.props.inventory.map((car, index) => (
+            {this.props.inventory && this.props.inventory.filter(car => car.isApproved === true || car.seller === "admin").map((car, index) => (
               <tr key={index}>
                 <td>{car.year}</td>
                 <td>{car.make}</td>

@@ -23,6 +23,7 @@ namespace dealership_app.Fake_Data
                 car.model = "Civic";
                 car.guid = Guid.NewGuid().ToString();
                 car.seller = $"{i}";
+                car.isApproved = true;
                 cars.Add(car);            
             }
             return cars;
@@ -34,7 +35,8 @@ namespace dealership_app.Fake_Data
                 year = year, 
                 make = make, 
                 model = model,
-                seller = seller
+                seller = seller,
+                isApproved = false
             });
 
             return cars;

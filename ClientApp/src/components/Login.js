@@ -31,9 +31,9 @@ export default class Login extends React.Component {
         {
           if(element.isAdmin === true)
           {
-            this.props.updateLoginStatus(true,true);
+            this.props.updateLoginStatus(true,true,element.username);
           } else {
-            this.props.updateLoginStatus(true);
+            this.props.updateLoginStatus(true,false,element.username);
           }
           console.log(this.props.login);
         }

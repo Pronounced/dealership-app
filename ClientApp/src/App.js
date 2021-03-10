@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-//import { Route } from 'react-router';
 import { Inventory } from './components/Inventory';
 import { AddInventory } from './components/AddInventory';
+import { UserInventory } from './components/UserInventory';
 import Login  from './components/Login';
 import { Button } from 'react-bootstrap';
 
@@ -16,7 +16,9 @@ export default class App extends Component {
     userData: [],
     nCar: null,
     isLoggedIn: false,
-    isAdmin: false
+    isAdmin: false,
+    view: null,
+    currentUser: null
   }
 
   handleAdd = () => {
@@ -25,6 +27,13 @@ export default class App extends Component {
       showForm: !this.state.showForm,
     });
   };
+
+  changeView = (view) => {
+    this.setState({
+      ...this.state,
+      view: view
+    })
+  }
 
   addCar = (car) => {
     console.log("car to add", car);
@@ -65,11 +74,12 @@ export default class App extends Component {
     return response;
   };
 
-  updateLoginStatus = (status, isAdmin) => {
+  updateLoginStatus = (status, isAdmin, user) => {
     this.setState({
       ...this.state,
       isLoggedIn: status,
-      isAdmin: isAdmin
+      isAdmin: isAdmin,
+      currentUser: user
     });
   }
 
@@ -103,7 +113,7 @@ export default class App extends Component {
 
   render() {
     console.log("render state", this.state);
-    const { showForm, inventoryData, isLoggedIn, userData, isAdmin } = this.state;
+    const { showForm, inventoryData, isLoggedIn, userData, isAdmin, view, currentUser } = this.state;
     if(!isLoggedIn) {
       return (        
         <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} login={isLoggedIn} users={userData}/>     
@@ -112,7 +122,7 @@ export default class App extends Component {
     {
       return(
         <div> 
-          <AddInventory addCar={this.addCar} />
+          <AddInventory currentUser={currentUser} addCar={this.addCar} />
           <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
         </div>
       )
@@ -121,12 +131,24 @@ export default class App extends Component {
       if(isAdmin)
       {
         return (<div>
-          <Inventory handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+          <Inventory changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
           <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
         </div>)
 
-      } else {
-        return (<Inventory inventory={inventoryData} />)
+      } else if (view === "UserInventory")
+      {
+        return(
+          <div>
+            <UserInventory inventory={inventoryData} currentUser={currentUser} view={view}/>
+          </div>
+        )
+      } 
+      else {
+        return (
+          <div>
+            <Inventory changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+          </div>
+        )
       }
     }
     
