@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, Card, Form, Container, Col, Row } from 'react-bootstrap';
 
 export default class Login extends React.Component {
   constructor(props)
@@ -49,16 +50,32 @@ export default class Login extends React.Component {
   render() {
     return (
       <div >
-        <form name="loginForm" onSubmit={this.handleSubmit} autoComplete="off">
-          <label>Username</label>
-          <input name="username" type="text" onChange={this.handleInputChange}></input>
-          <label>Password</label>
-          <input name="password" type="password" onChange={this.handleInputChange}></input>
-          <button type="submit">Submit</button>
-        </form>
-
+        <Container fluid>
+          <Row style={{ height: '33vh'}}></Row>
+          <Row>
+          <Col></Col>
+            <Col md="auto">
+              <Card style={{ width: '18rem'}}>
+                <Card.Header as="h5">Login</Card.Header>
+                <Card.Body>
+                  <Form name="loginForm" onSubmit={this.handleSubmit} autoComplete="off">
+                    <Form.Group >
+                      <Form.Label>Username</Form.Label>
+                      <Form.Control name="username" type="text" onChange={this.handleInputChange}></Form.Control>
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control name="password" type="password" onChange={this.handleInputChange}></Form.Control>
+                    </Form.Group>
+                  </Form>
+                </Card.Body>
+                <Card.Footer>
+                  <Button onClick={this.handleSubmit} block>Submit</Button>
+                </Card.Footer>
+              </Card>
+            </Col>
+            <Col></Col>
+          </Row>
+        </Container>
       </div>
-
     );
   }
 }

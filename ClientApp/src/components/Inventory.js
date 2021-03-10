@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Table, Button } from 'react-bootstrap';
 //import { Route } from 'react-router';
 //import { Redirect } from 'react-router-dom';
 
@@ -53,7 +54,7 @@ export class Inventory extends Component {
     console.log(this.state.inventory)
     return (
        <div>
-        <table>
+        <Table striped bordered hover variant="dark">
           <thead>
             <tr>
               <th>Year</th>
@@ -70,8 +71,8 @@ export class Inventory extends Component {
               </tr>
             ))}
           </tbody>    
-        </table>
-        <button type="button" onClick={ () => {this.props.changeView("AddInventory")}}>Add Car</button>
+        </Table>
+        <Button type="button" onClick={ () => {this.props.changeView("AddInventory")}}>Add Car</Button>
         {/* <button type="button" onClick={() => this.setRedirect("AddInventory")}>Add Car</button> */}
        </div>
     );
