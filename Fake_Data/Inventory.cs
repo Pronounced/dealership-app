@@ -22,17 +22,19 @@ namespace dealership_app.Fake_Data
                 car.make = "Honda";
                 car.model = "Civic";
                 car.guid = Guid.NewGuid().ToString();
+                car.seller = $"{i}";
                 cars.Add(car);            
             }
             return cars;
         }
 
-        static public List<Car> PostCar(string year, string make, string model){
+        static public List<Car> PostCar(string year, string make, string model, string seller){
             cars.Add(new Car(){
                 guid = Guid.NewGuid().ToString(),
                 year = year, 
                 make = make, 
-                model = model
+                model = model,
+                seller = seller
             });
 
             return cars;

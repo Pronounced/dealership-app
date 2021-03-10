@@ -1,57 +1,12 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 //import { Route } from 'react-router';
 //import { Redirect } from 'react-router-dom';
 
 export class Inventory extends Component {
   static displayName = Inventory.name;
 
-  constructor(props) {
-    console.log("constructor")
-    super(props);
-    this.state = {
-      error: null,
-      isLoaded: false,
-      inventory: [],
-      redirect: false,
-      route: "Inventory"
-    }
-    console.log(this.state.inventory)
-  }
-
-  // setRedirect = (route) => {
-  //   this.setState({
-  //     redirect: true,
-  //     route: route
-  //   })
-  // }
-  // renderRedirect = () => {
-  //   if (this.state.redirect) {
-  //     return <Redirect to= {this.state.route} />
-  //   }
-  // }
-
-  getCars = () => {
-    fetch("https://localhost:5001/api/inventory/")
-    .then(response => response.json())
-    .then((result) => {
-        this.setState({
-          isLoaded: true,
-          inventory: result
-        });
-      }
-    )
-  }
-
-  componentDidMount() {
-    console.log("Mount")
-    this.getCars();
-    console.log(this.state.inventory)
-  }
-
   render() {
-    console.log("render")
-    console.log(this.state.inventory)
     return (
        <div>
         <Table striped bordered hover variant="dark">
@@ -63,17 +18,15 @@ export class Inventory extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.inventory.map(i => (
-              <tr key={i.guid}>
-                <td>{i.year}</td>
-                <td>{i.make}</td>
-                <td>{i.model}</td>
+            {this.props.inventory && this.props.inventory.map((car, index) => (
+              <tr key={index}>
+                <td>{car.year}</td>
+                <td>{car.make}</td>
+                <td>{car.model}</td>
               </tr>
             ))}
           </tbody>    
         </Table>
-        <Button type="button" onClick={ () => {this.props.changeView("AddInventory")}}>Add Car</Button>
-        {/* <button type="button" onClick={() => this.setRedirect("AddInventory")}>Add Car</button> */}
        </div>
     );
   }

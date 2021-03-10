@@ -25,8 +25,19 @@ namespace dealership_app.Fake_Data
                 user.password = "1";
                 user.creationdate = DateTime.Now;
                 user.updatedate = DateTime.Now;
+                user.isAdmin = false;
                 users.Add(user);
             }
+
+            var admin = new User(){
+                username = "admin",
+                email = "admin@test.com",
+                password = "1",
+                creationdate = DateTime.Now,
+                updatedate = DateTime.Now,
+                isAdmin = true
+            };
+            users.Add(admin);
 
             return users;
         }

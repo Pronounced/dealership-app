@@ -2,15 +2,12 @@ import React from "react";
 import { Button, Card, Form, Container, Col, Row } from 'react-bootstrap';
 
 export default class Login extends React.Component {
-  constructor(props)
-  {
-    super(props);
-    this.state={ 
-      username: "",
-      password: "",
-      userList: [],
-    };
-  }
+
+  state={ 
+    username: "",
+    password: "",
+    userList: [],
+  };
 
   handleInputChange = (event) => {
     this.setState({
@@ -18,33 +15,31 @@ export default class Login extends React.Component {
       })
   }
 
+  skip = () => {
+    this.props.updateLoginStatus(true);
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
-    if(!this.state.isLogined)
+    console.log(this.props.login);
+    if(!this.props.login)
     {
-      this.state.userList.map(element =>
+      console.log(this.props.login);
+      this.props.users.map(element =>
       {
         if(this.state.username === element.username && this.state.password === element.password)
         {
-          this.props.onLogChange(true);
-          this.props.changeView("Inventory");
+          if(element.isAdmin === true)
+          {
+            this.props.updateLoginStatus(true,true);
+          } else {
+            this.props.updateLoginStatus(true);
+          }
+          console.log(this.props.login);
         }
         return true;
       })
     }
-  }
-
-  componentDidMount() {
-    fetch("https://localhost:5001/api/users/")
-    .then(response => response.json())
-    .then(
-      (result) => {
-        this.setState({
-          isLoaded: true,
-          userList: result
-        });
-      }
-    )  
   }
     
   render() {
@@ -69,6 +64,7 @@ export default class Login extends React.Component {
                 </Card.Body>
                 <Card.Footer>
                   <Button onClick={this.handleSubmit} block>Submit</Button>
+                  <Button onClick={this.skip}>Skip</Button>
                 </Card.Footer>
               </Card>
             </Col>

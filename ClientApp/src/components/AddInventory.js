@@ -1,76 +1,58 @@
 import React, { Component } from 'react';
+import { Button, Form, Row, Col, Card, Container} from 'react-bootstrap';
 //import { Redirect } from 'react-router-dom';
 
                               
 export class AddInventory extends Component{
   static displayName = AddInventory.name;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      car: {
-        year: "",
-        make: "",
-        model: "",
-      },
-      redirect: false,
-      route: "AddInventory"
+    state = {
+      year: "",
+      make: "",
+      model: "",
     }
-  }
 
-  // setRedirect = (route) => {
-  //   this.setState({
-  //     redirect: true,
-  //     route: route
-  //   })
-  // }
+  handleChange = ({target}) => {
+    const name = target.name
+    const value = target.value
+    this.setState({...this.state, [name]: value });
+  };
 
-  // renderRedirect = () => {
-  //   if (this.state.redirect) {
-  //     return <Redirect to= {this.state.route} />
-  //   }
-  // }
-
-  updateState = (event) => {
-    var car = {...this.state.car};
-    car[event.target.name] = event.target.value;
-    this.setState({car});
-  }
-
-  postCar = (event) => {
+  handleSubmit = (event) => {
     event.preventDefault();
-    var car = this.state.car;
-    const requestOptions = {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(car)
-    };
-    fetch('https://localhost:5001/api/inventory/addcar', requestOptions)
-    .then(response => response).then(this.props.changeView("Inventory"));
-  }
+    this.props.addCar(this.state);
+  };
 
   render() {
     return (
       <div>
-        {/* {this.renderRedirect()} */}
-        <form onSubmit={this.postCar}>
-          <p>
-            <label>Year</label>
-            <input name="year" type="text" onChange={this.updateState}></input>
-          </p>
-          <p>
-            <label>Make</label>
-            <input name="make" type="text" onChange={this.updateState}></input>
-          </p>
-          <p>
-            <label>Model</label>
-            <input name="model" type="text" onChange={this.updateState}></input>
-          </p>
-          <button type="submit">Submit</button>
-          {/* <button type="button" onClick={ () => this.setRedirect("/")}>Back</button> */}
-          <button type="button" onClick={ () => this.props.changeView("Inventory")}>Back</button>
-        </form>
+        <Container fluid>
+          <Row style={{ height: '15vh'}}></Row>
+          <Row>
+          <Col></Col>
+            <Col md="auto">
+              <Card style={{ width: '18rem'}}>
+                <Card.Header as="h5">Add Car</Card.Header>
+                <Card.Body>
+                  <Form>
+                    <Form.Group>
+                      <Form.Label>Year</Form.Label>
+                      <Form.Control name="year" type="text" onChange={this.handleChange}></Form.Control>
+                      <Form.Label>Make</Form.Label>
+                      <Form.Control name="make" type="text" onChange={this.handleChange}></Form.Control>
+                      <Form.Label>Model</Form.Label>
+                      <Form.Control name="model" type="text" onChange={this.handleChange}></Form.Control>
+                      <Button type="submit">Submit</Button>
+                    </Form.Group>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col></Col>
+          </Row>
+        </Container>
       </div>
-    )
+    );
   }
 }
+
