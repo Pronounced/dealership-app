@@ -42,6 +42,16 @@ namespace dealership_app.Fake_Data
             return cars;
         }
 
+        static public void UpdateCar(bool isApproved, string guid){
+            foreach (var car in cars)
+            {
+                if (car.guid == guid){
+                    car.isApproved = isApproved;
+                }
+            }
+        }
+            
+
 
     }
 }

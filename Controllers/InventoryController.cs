@@ -21,5 +21,11 @@ namespace dealership_app.Controllers
         {
             Inventory.PostCar(car.year,car.make,car.model,car.seller, car.guid);
         }
+
+        [HttpPut("updatecar")]
+        public void Put([FromBody] Car car)
+        {
+            Inventory.UpdateCar(car.isApproved, car.guid);
+        }
     }
 }

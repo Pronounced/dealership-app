@@ -42,6 +42,17 @@ export default class App extends Component {
     })
   }
 
+  updateCar = (car,status) => {
+    console.log(car)
+    this.setState({
+      inventoryData: this.state.inventoryData.map((item)=> {
+        if (item.guid === car.guid){
+          item.isApproved = status
+        }
+      })
+    })
+  }
+
   addCar = (car) => {
     console.log("car to add", car);
     this.setState({
@@ -130,7 +141,7 @@ export default class App extends Component {
           <Redirect to={view}/>
           <Switch>
             <Route path="/Inventory" >
-              <Inventory changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+              <Inventory updateCar={this.updateCar} addCar={this.addCar} changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
             </Route>
             <Route path="/UserInventory" >
               <UserInventory inventory={inventoryData} changeView={this.changeView} currentUser={currentUser} view={view} addCar={this.addCar}/>
