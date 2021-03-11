@@ -4,6 +4,12 @@ import { AddInventory } from './components/AddInventory';
 import { UserInventory } from './components/UserInventory';
 import Login  from './components/Login';
 import { Button } from 'react-bootstrap';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 import './custom.css'
 
@@ -114,6 +120,18 @@ export default class App extends Component {
   render() {
     console.log("render state", this.state);
     const { showForm, inventoryData, isLoggedIn, userData, isAdmin, view, currentUser } = this.state;
+    // return(
+    //     <Router>
+    //       <Switch>
+    //         <Route path="Inventory">
+
+    //         </Route>
+    //         <Route path="/">
+    //           <Login></Login>
+    //         </Route>
+    //       </Switch>
+    //     </Router>
+    // )
     if(!isLoggedIn) {
       return (        
         <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} login={isLoggedIn} users={userData}/>     
@@ -139,7 +157,7 @@ export default class App extends Component {
       {
         return(
           <div>
-            <UserInventory inventory={inventoryData} currentUser={currentUser} view={view}/>
+            <UserInventory inventory={inventoryData} changeView={this.changeView} currentUser={currentUser} view={view} addCar={this.addCar}/>
           </div>
         )
       } 
@@ -151,18 +169,5 @@ export default class App extends Component {
         )
       }
     }
-    
-    // else {
-    //   return (
-    //     <>
-    //       {showForm ? (
-    //         <AddInventory addCar={this.addCar} />
-    //       ) : (
-    //         <Inventory inventory={inventoryData} />
-    //       )}
-    //       <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
-    //     </>
-    //   );
-    // }
   }
 }

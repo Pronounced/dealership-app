@@ -29,9 +29,9 @@ namespace dealership_app.Fake_Data
             return cars;
         }
 
-        static public List<Car> PostCar(string year, string make, string model, string seller){
+        static public List<Car> PostCar(string year, string make, string model, string seller, string guid){
             cars.Add(new Car(){
-                guid = Guid.NewGuid().ToString(),
+                guid = guid,
                 year = year, 
                 make = make, 
                 model = model,

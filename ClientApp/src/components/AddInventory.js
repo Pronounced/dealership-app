@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Card, Container} from 'react-bootstrap';
+import {v4 as uuidv4} from 'uuid';
 //import { Redirect } from 'react-router-dom';
 
                               
@@ -10,13 +11,18 @@ export class AddInventory extends Component{
       year: "",
       make: "",
       model: "",
-      seller: ""
+      seller: "",
+      guid: uuidv4(),
+      isApproved: ""
     }
 
   handleChange = ({target}) => {
     const name = target.name
     const value = target.value
-    this.setState({...this.state, [name]: value });
+    this.setState({...this.state, [name]: value, 
+      seller: this.props.currentUser,
+      isApproved: this.props.isAdmin ? true : false
+    });
   };
 
   handleSubmit = (event) => {
@@ -43,9 +49,6 @@ export class AddInventory extends Component{
                       <Form.Control name="make" type="text" onChange={this.handleChange}></Form.Control>
                       <Form.Label>Model</Form.Label>
                       <Form.Control name="model" type="text" onChange={this.handleChange}></Form.Control>
-                      {this.setState({
-                        seller: this.props.currentUser
-                      })}
                       <Button type="submit">Submit</Button>
                     </Form.Group>
                   </Form>
