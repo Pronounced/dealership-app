@@ -8,9 +8,10 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
-
+import { PrivateRoute } from './components/PrivateRoute'
 import './custom.css'
 
 export default class App extends Component {
@@ -23,7 +24,7 @@ export default class App extends Component {
     nCar: null,
     isLoggedIn: false,
     isAdmin: false,
-    view: null,
+    view: '/',
     currentUser: null
   }
 
@@ -80,13 +81,17 @@ export default class App extends Component {
     return response;
   };
 
-  updateLoginStatus = (status, isAdmin, user) => {
+  updateLoginStatus = (status, isAdmin, user,) => {
+    console.log("updateLoginStatus")
     this.setState({
       ...this.state,
       isLoggedIn: status,
       isAdmin: isAdmin,
-      currentUser: user
-    });
+      currentUser: user,
+      view: 'Inventory'
+    },
+    
+    );
   }
 
   componentDidMount() {
@@ -120,54 +125,61 @@ export default class App extends Component {
   render() {
     console.log("render state", this.state);
     const { showForm, inventoryData, isLoggedIn, userData, isAdmin, view, currentUser } = this.state;
-    // return(
-    //     <Router>
-    //       <Switch>
-    //         <Route path="Inventory">
+    return(
+        <Router>
+          <Redirect to={view}/>
+          <Switch>
+            <Route path="/Inventory" >
+              <Inventory changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+            </Route>
+            <Route path="/UserInventory" >
+              <UserInventory inventory={inventoryData} changeView={this.changeView} currentUser={currentUser} view={view} addCar={this.addCar}/>
+            </Route>
+            <Route path="/AddInventory" >
+              <AddInventory currentUser={currentUser} addCar={this.addCar} />
+            </Route>
+            <Route path="/">
+              <Login changeView={this.changeView} updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} login={isLoggedIn} users={userData} />
+            </Route>
+          </Switch>
+        </Router>
+    )
+    // if(!isLoggedIn) {
+    //   return (        
+    //     <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} login={isLoggedIn} users={userData}/>     
+    //   )
+    // } else if (showForm)
+    // {
+    //   return(
+    //     <div> 
+    //       <AddInventory currentUser={currentUser} addCar={this.addCar} />
+    //       <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
+    //     </div>
+    //   )
+    // } else
+    // {
+    //   if(isAdmin)
+    //   {
+    //     return (<div>
+    //       <Inventory changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+    //       <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
+    //     </div>)
 
-    //         </Route>
-    //         <Route path="/">
-    //           <Login></Login>
-    //         </Route>
-    //       </Switch>
-    //     </Router>
-    // )
-    if(!isLoggedIn) {
-      return (        
-        <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} login={isLoggedIn} users={userData}/>     
-      )
-    } else if (showForm)
-    {
-      return(
-        <div> 
-          <AddInventory currentUser={currentUser} addCar={this.addCar} />
-          <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
-        </div>
-      )
-    } else
-    {
-      if(isAdmin)
-      {
-        return (<div>
-          <Inventory changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
-          <Button onClick={this.handleAdd}>{showForm ? "Cancel" : "Add"}</Button>
-        </div>)
-
-      } else if (view === "UserInventory")
-      {
-        return(
-          <div>
-            <UserInventory inventory={inventoryData} changeView={this.changeView} currentUser={currentUser} view={view} addCar={this.addCar}/>
-          </div>
-        )
-      } 
-      else {
-        return (
-          <div>
-            <Inventory changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
-          </div>
-        )
-      }
-    }
+    //   } else if (view === "UserInventory")
+    //   {
+    //     return(
+    //       <div>
+    //         <UserInventory inventory={inventoryData} changeView={this.changeView} currentUser={currentUser} view={view} addCar={this.addCar}/>
+    //       </div>
+    //     )
+    //   } 
+    //   else {
+    //     return (
+    //       <div>
+    //         <Inventory changeView={this.changeView} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+    //       </div>
+    //     )
+    //   }
+    // }
   }
 }

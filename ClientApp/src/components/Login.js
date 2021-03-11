@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Card, Form, Container, Col, Row } from 'react-bootstrap';
+import { Inventory } from "./Inventory";
 
 export default class Login extends React.Component {
 
@@ -29,11 +30,13 @@ export default class Login extends React.Component {
       {
         if(this.state.username === element.username && this.state.password === element.password)
         {
-          if(element.isAdmin === true)
+          if(element.isAdmin)
           {
             this.props.updateLoginStatus(true,true,element.username);
+            // this.props.changeView('Inventory');
           } else {
             this.props.updateLoginStatus(true,false,element.username);
+            // this.props.changeView('Inventory');
           }
           console.log(this.props.login);
         }
