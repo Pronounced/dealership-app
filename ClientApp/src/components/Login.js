@@ -22,10 +22,8 @@ export default class Login extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.props.login);
     if(!this.props.login)
     {
-      console.log(this.props.login);
       this.props.users.map(element =>
       {
         if(this.state.username === element.username && this.state.password === element.password)
@@ -33,12 +31,9 @@ export default class Login extends React.Component {
           if(element.isAdmin)
           {
             this.props.updateLoginStatus(true,true,element.username);
-            // this.props.changeView('Inventory');
           } else {
             this.props.updateLoginStatus(true,false,element.username);
-            // this.props.changeView('Inventory');
           }
-          console.log(this.props.login);
         }
         return true;
       })

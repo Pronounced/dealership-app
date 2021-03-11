@@ -8,7 +8,6 @@ export class UserInventory extends Component {
   static displayName = UserInventory.name;
 
   render() {
-    console.log("inventory", this.props.inventory);
     return (
        <div>
        <Navbar bg="dark" variant="dark">
