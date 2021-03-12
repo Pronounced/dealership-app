@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Navbar, Nav, Button, Card, Accordion } from 'react-bootstrap';
 import { AddInventory } from './AddInventory';
-//import { Route } from 'react-router';
-//import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export class Inventory extends Component {
   static displayName = Inventory.name;
@@ -11,10 +10,10 @@ export class Inventory extends Component {
     return (
        <div>
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="#home">Car Dealership</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/Inventory">Car Dealership</Navbar.Brand>
           <Nav className="mr-auto">
-            {this.props.isAdmin && <Nav.Link onClick={this.props.handleAdd}>Add Car to Inventory</Nav.Link>}
-            {!this.props.isAdmin && <Nav.Link onClick={() => this.props.changeView("UserInventory")}>See My Cars</Nav.Link>}
+            {!this.props.isAdmin && <Nav.Link as={Link} to="/UserInventory">See My Cars</Nav.Link>}
+            <Nav.Link as={Link} to="/Login">Logout</Nav.Link>
           </Nav>
         </Navbar>
         <Table striped bordered hover variant="dark">

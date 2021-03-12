@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Card, Form, Container, Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 export default class Login extends React.Component {
 
   state={ 
     username: "",
     password: "",
-    userList: [],
   };
 
   handleInputChange = (event) => {
@@ -20,25 +20,27 @@ export default class Login extends React.Component {
   }
 
   handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(this.props.login);
-    if(!this.props.login)
-    {
-      console.log(this.props.login);
+    var auth = false;
+    if(this.state.username.length === 0 || this.state.password.length === 0) {
+      event.preventDefault();
+    } else {
       this.props.users.map(element =>
-      {
-        if(this.state.username === element.username && this.state.password === element.password)
         {
-          if(element.isAdmin === true)
+          if(this.state.username === element.username && this.state.password === element.password)
           {
-            this.props.updateLoginStatus(true,true,element.username);
-          } else {
-            this.props.updateLoginStatus(true,false,element.username);
+            if(element.isAdmin)
+            {
+              this.props.updateLoginStatus(true,true,element.username);
+            } else {
+              this.props.updateLoginStatus(true,false,element.username);
+            }
+            auth = true;
           }
-          console.log(this.props.login);
-        }
-        return true;
-      })
+          return true;
+        })
+    }
+    if(!auth){
+      event.preventDefault();
     }
   }
     
@@ -63,8 +65,8 @@ export default class Login extends React.Component {
                   </Form>
                 </Card.Body>
                 <Card.Footer>
-                  <Button onClick={this.handleSubmit} block>Submit</Button>
-                  <Button onClick={this.skip}>Skip</Button>
+                  <Link to="/Inventory"> <Button onClick={this.handleSubmit} block>Submit</Button> </Link>
+                  <Link to="/Inventory"><Button onClick={this.skip}>Skip</Button></Link>
                 </Card.Footer>
               </Card>
             </Col>
