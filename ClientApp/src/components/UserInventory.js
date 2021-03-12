@@ -22,6 +22,7 @@ export class UserInventory extends Component {
               <th>Year</th>
               <th>Make</th>
               <th>Model</th>
+              <th>color</th>
               <th>Approved</th>
             </tr>
           </thead>

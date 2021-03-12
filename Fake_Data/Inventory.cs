@@ -21,6 +21,7 @@ namespace dealership_app.Fake_Data
                 car.year = "2000";
                 car.make = "Honda";
                 car.model = "Civic";
+                car.color = "red";
                 car.guid = Guid.NewGuid().ToString();
                 car.seller = $"{i}";
                 car.isApproved = true;
@@ -29,13 +30,14 @@ namespace dealership_app.Fake_Data
             return cars;
         }
 
-        static public List<Car> PostCar(string year, string make, string model, string seller, string guid, bool isApproved){
+        static public List<Car> PostCar(string year, string make, string model, string seller, string guid, bool isApproved, string color){
             cars.Add(new Car(){
                 guid = guid,
                 year = year, 
                 make = make, 
                 model = model,
                 seller = seller,
+                color = color,
                 isApproved = isApproved
             });
 

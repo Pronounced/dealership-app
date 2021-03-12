@@ -10,6 +10,7 @@ namespace dealership_app.Models
         public string guid { get; set; }
         public string seller { get; set; }
         public bool isApproved { get; set; }
+        public string color {get; set;}
 
         public override string ToString()
         {

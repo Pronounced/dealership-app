@@ -133,7 +133,7 @@ export default class App extends Component {
       <Router>
         <Switch>
           <Route path="/Inventory" >
-            <Inventory updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+            <Inventory currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
           </Route>
           <Route path="/UserInventory" >
             <UserInventory inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>

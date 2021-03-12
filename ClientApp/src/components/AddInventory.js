@@ -11,7 +11,8 @@ export class AddInventory extends Component{
       year: "",
       make: "",
       model: "",
-      seller: "",
+      color: "",
+      seller: this.props.currentUser,
       guid: uuidv4(),
       isApproved: ""
     }
@@ -41,14 +42,16 @@ export class AddInventory extends Component{
               <Card style={{ width: '18rem'}}>
                 <Card.Header as="h5">Add Car</Card.Header>
                 <Card.Body>
-                  <Form onSubmit={this.handleSubmit}>
+                  <Form onSubmit={this.handleSubmit} autoComplete="off">
                     <Form.Group>
                       <Form.Label>Year</Form.Label>
                       <Form.Control name="year" type="text" onChange={this.handleChange}></Form.Control>
                       <Form.Label>Make</Form.Label>
                       <Form.Control name="make" type="text" onChange={this.handleChange}></Form.Control>
                       <Form.Label>Model</Form.Label>
-                      <Form.Control name="model" type="text" onChange={this.handleChange}></Form.Control>
+                       <Form.Control name="model" type="text" onChange={this.handleChange}></Form.Control>
+                      <Form.Label>Color</Form.Label>
+                      <Form.Control name="color" type="text" onChange={this.handleChange}></Form.Control>
                       <Button type="submit">Submit</Button>
                     </Form.Group>
                   </Form>

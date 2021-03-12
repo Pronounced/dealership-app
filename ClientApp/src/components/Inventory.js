@@ -22,7 +22,9 @@ export class Inventory extends Component {
               <th>Year</th>
               <th>Make</th>
               <th>Model</th>
+              <th>Color</th>
               <th>Approved</th>
+              
               {this.props.isAdmin && <th>Set Status</th>}
             </tr>
           </thead>
@@ -32,6 +34,7 @@ export class Inventory extends Component {
                 <td>{car.year}</td>
                 <td>{car.make}</td>
                 <td>{car.model}</td>
+                <td>{car.color}</td>
                 <td>{car.isApproved.toString()}</td>
                 {this.props.isAdmin && 
                   <td>
