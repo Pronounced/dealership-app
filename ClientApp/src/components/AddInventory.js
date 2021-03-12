@@ -26,10 +26,17 @@ export class AddInventory extends Component{
     });
   };
 
+
+
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.addCar(this.state);
-  };
+    this.props.rules.map((rule) =>{
+        if(parseInt(rule.startYear)<= parseInt(this.state.year) && parseInt(rule.endYear)>= parseInt(this.state.year))
+        {
+        return this.props.addCar(this.state)
+        }
+    })
+  }
 
   render() {
     return (

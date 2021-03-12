@@ -23,7 +23,9 @@ export default class App extends Component {
     isLoggedIn: false,
     isAdmin: false,
     currentUser: null,
-    carRules: []
+    carRules: [],
+    postArray: [],
+    url: null
   }
 
   handleAdd = () => {
@@ -44,7 +46,14 @@ export default class App extends Component {
         }
         return car
       }),
-      nCar: copyData.filter(car => car.guid === guid)
+      nCar: copyData.filter(car => car.guid === guid),
+      postArray: copyData.map(car => {
+        if(car.guid === guid)
+        {
+          car.isApproved = status;
+        }
+        return car
+      }),
     });
   }
 
@@ -52,7 +61,18 @@ export default class App extends Component {
     this.setState({
       inventoryData: this.state.inventoryData.concat(car),
       showForm: false,
-      loading: true
+      loading: true,
+      postArray: this.state.inventoryData.concat(car),
+      url: 'https://localhost:5001/api/inventory/addcar'
+    });
+  };
+
+  addCarRule = (car) => {
+    this.setState({
+      carRules: this.state.carRules.concat(car),
+      loading: true,
+      postArray: this.state.carRules.concat(car),
+      url: 'https://localhost:5001/api/carrules/addcarrule'
     });
   };
 
@@ -125,16 +145,16 @@ export default class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const plength = prevState.inventoryData.length;
-    const nlength = this.state.inventoryData.length;
-    if (plength !== 0 && plength !== nlength) {
-      const nCar = this.state.inventoryData[nlength - 1]
-      this.postData(nCar, "https://localhost:5001/api/inventory/addcar").then(
+    const plength = prevState.postArray.length;
+    const nlength = this.state.postArray.length;
+    if (plength !== nlength) {
+      const nCar = this.state.postArray[nlength - 1]
+      this.postData(nCar, this.state.url).then(
         (res) => {
           console.log("posted new car!!", res);
         }
       );
-    } else if (plength !== 0 && plength === nlength)
+    } else if (plength === nlength)
     {
       const nCar = this.state.nCar[0];
       this.putData(nCar, "https://localhost:5001/api/inventory/updatecar");
@@ -151,16 +171,16 @@ export default class App extends Component {
             <Inventory currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
           </Route>
           <Route path="/UserInventory" >
-            <UserInventory inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
+            <UserInventory rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
           </Route>
           <Route path="/AddInventory" >
-            <AddInventory currentUser={currentUser} addCar={this.addCar} />
+            <AddInventory currentUser={currentUser} addCar={this.addCar} rules={carRules} />
           </Route>
           <Route path="/Customers">
-            <Customers users={userData}></Customers>
+            <Customers users={userData} isAdmin={isAdmin}></Customers>
           </Route>
           <Route path="/CarRules">
-            <CarRules rules={carRules} isAdmin={isAdmin}/>
+            <CarRules rules={carRules} isAdmin={isAdmin} addCarRule={this.addCarRule}/>
           </Route>
           <Route path="/">
             <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />

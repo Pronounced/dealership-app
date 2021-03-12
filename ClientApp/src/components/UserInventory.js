@@ -34,6 +34,7 @@ export class UserInventory extends Component {
                 <td>{car.year}</td>
                 <td>{car.make}</td>
                 <td>{car.model}</td>
+                <td>{car.color}</td>
                 <td>{car.isApproved.toString()}</td>
               </tr>
             ))}
@@ -48,7 +49,7 @@ export class UserInventory extends Component {
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  <AddInventory addCar={this.props.addCar} currentUser={this.props.currentUser}/>
+                  <AddInventory rules={this.props.rules} addCar={this.props.addCar} currentUser={this.props.currentUser}/>
                 </Card.Body>
               </Accordion.Collapse>
             </Card>
