@@ -17,10 +17,9 @@ export default class App extends Component {
     showForm: false,
     inventoryData: [],
     userData: [],
-    nCar: null,
+    nCar: [],
     isLoggedIn: false,
     isAdmin: false,
-    view: '/',
     currentUser: null
   }
 
@@ -41,22 +40,8 @@ export default class App extends Component {
           car.isApproved = status;
         }
         return car
-      })
-    });
-  }
-
-  updateCar = (guid, status) => {
-    let copyData = this.state.inventoryData;
-    this.setState({
-      ...this.state,
-      inventoryData: copyData.map(car => {
-        if(car.guid === guid)
-        {
-          car.isApproved = status;
-        }
-
-        return car
-      })
+      }),
+      nCar: copyData.filter(car => car.guid === guid)
     });
   }
 
@@ -136,9 +121,11 @@ export default class App extends Component {
       );
     } else if (plength !== 0 && plength === nlength)
     {
-      
+      const nCar = this.state.nCar[0];
+      this.putData(nCar, "https://localhost:5001/api/inventory/updatecar");
     }
   }
+  
 
   render() {
     const { inventoryData, userData, isAdmin, view, currentUser } = this.state;

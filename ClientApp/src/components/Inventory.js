@@ -22,7 +22,7 @@ export class Inventory extends Component {
               <th>Year</th>
               <th>Make</th>
               <th>Model</th>
-              <th>Status</th>
+              <th>Approved</th>
               {this.props.isAdmin && <th>Set Status</th>}
             </tr>
           </thead>

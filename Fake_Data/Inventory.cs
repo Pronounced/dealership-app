@@ -29,14 +29,14 @@ namespace dealership_app.Fake_Data
             return cars;
         }
 
-        static public List<Car> PostCar(string year, string make, string model, string seller, string guid){
+        static public List<Car> PostCar(string year, string make, string model, string seller, string guid, bool isApproved){
             cars.Add(new Car(){
                 guid = guid,
                 year = year, 
                 make = make, 
                 model = model,
                 seller = seller,
-                isApproved = false
+                isApproved = isApproved
             });
 
             return cars;
