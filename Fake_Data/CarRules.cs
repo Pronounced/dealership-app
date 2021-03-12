@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using dealership_app.Models;
 
 namespace dealership_app.Fake_Data
@@ -61,7 +62,7 @@ namespace dealership_app.Fake_Data
 
         static public void DeleteCarRule(string name)
         {
-            foreach (var item in rules)
+            foreach (var item in rules.ToList())
             {
                 if(item.name == name)
                 {

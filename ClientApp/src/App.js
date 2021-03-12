@@ -45,16 +45,9 @@ export default class App extends Component {
           car.isApproved = status;
         }
         return car
-      }),
-      nCar: copyData.filter(car => car.guid === guid),
-      postArray: copyData.map(car => {
-        if(car.guid === guid)
-        {
-          car.isApproved = status;
-        }
-        return car
-      }),
+      })
     });
+    this.putData(copyData.filter(car => car.guid === guid)[0], "https://localhost:5001/api/inventory/updatecar");
   }
 
   addCar = (car) => {
@@ -62,28 +55,26 @@ export default class App extends Component {
       inventoryData: this.state.inventoryData.concat(car),
       showForm: false,
       loading: true,
-      postArray: this.state.inventoryData.concat(car),
-      url: 'https://localhost:5001/api/inventory/addcar'
     });
+    this.postData(car, 'https://localhost:5001/api/inventory/addcar')
   };
 
   addCarRule = (rule) => {
     this.setState({
       carRules: this.state.carRules.concat(rule),
       loading: true,
-      postArray: this.state.carRules.concat(rule),
-      url: 'https://localhost:5001/api/carrules/addcarrule'
     });
+    this.postData(rule, 'https://localhost:5001/api/carrules/addcarrule')
   };
 
   deleteCarRule = (rule) => {
     let copyData = this.state.carRules;
+    var index = copyData.indexOf(rule);
+    copyData.splice(index, 1);
     this.setState({
-      carRules: copyData.splice(copyData.carRules.indexOf(rule), 1),
-      postArray: copyData.splice(copyData.carRules.indexOf(rule), 1),
-      url: 'https://localhost:5001/api/carrules/deletecarrule',
-      nCar: copyData.filter(element => element.name === rule.name),
+      carRules: copyData,
     })
+    this.deleteData(rule, 'https://localhost:5001/api/carrules/deletecarrule')
   }
 
   getInventoryData = async (url) => {
@@ -152,6 +143,8 @@ export default class App extends Component {
     });
   }
 
+
+
   componentDidMount() {
     this.getInventoryData("https://localhost:5001/api/inventory/").then((data) => {
       this.setState({ ...this.state, inventoryData: data, loading: false });
@@ -165,23 +158,15 @@ export default class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const plength = prevState.postArray.length;
-    const nlength = this.state.postArray.length;
-    if (plength < nlength) {
-      const nCar = this.state.postArray[nlength - 1]
-      this.postData(nCar, this.state.url).then(
-        (res) => {
-          console.log("posted new car!!", res);
-        }
-      );
-    } else if (plength === nlength)
-    {
-      const nCar = this.state.nCar[0];
-      this.putData(nCar, "https://localhost:5001/api/inventory/updatecar");
-    } else if (plength > nlength){
-      const nCar = this.state.nCar[0];
-      this.deleteData(nCar, this.state.url);
-    }
+    // const plength = prevState.postArray.length;
+    // const nlength = this.state.postArray.length;
+    // if (plength < nlength) {
+    //   const nCar = this.state.postArray[nlength - 1]
+    //   this.postData(nCar, this.state.url);
+    // } else if (plength > nlength){
+    //   const nCar = this.state.nCar[0];
+    //   this.deleteData(nCar, this.state.url);
+    // }
   }
   
 
