@@ -30,12 +30,25 @@ export class AddInventory extends Component{
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.rules.map((rule) =>{
+    if(!this.props.isAdmin) {
+      this.props.rules.map((rule) => {
         if(parseInt(rule.startYear)<= parseInt(this.state.year) && parseInt(rule.endYear)>= parseInt(this.state.year))
         {
-        return this.props.addCar(this.state)
+          if(rule.make === this.state.make)
+          {
+            if(rule.model === this.state.model)
+            {
+              if(rule.color === this.state.color)
+              {
+                return this.props.addCar(this.state);
+              }
+            }
+          }
         }
-    })
+      })
+    } else {
+      return this.props.addCar(this.state);
+    }
   }
 
   render() {

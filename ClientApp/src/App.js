@@ -67,14 +67,24 @@ export default class App extends Component {
     });
   };
 
-  addCarRule = (car) => {
+  addCarRule = (rule) => {
     this.setState({
-      carRules: this.state.carRules.concat(car),
+      carRules: this.state.carRules.concat(rule),
       loading: true,
-      postArray: this.state.carRules.concat(car),
+      postArray: this.state.carRules.concat(rule),
       url: 'https://localhost:5001/api/carrules/addcarrule'
     });
   };
+
+  deleteCarRule = (rule) => {
+    let copyData = this.state.carRules;
+    this.setState({
+      carRules: copyData.splice(copyData.carRules.indexOf(rule), 1),
+      postArray: copyData.splice(copyData.carRules.indexOf(rule), 1),
+      url: 'https://localhost:5001/api/carrules/deletecarrule',
+      nCar: copyData.filter(element => element.name === rule.name),
+    })
+  }
 
   getInventoryData = async (url) => {
     const response = await fetch(url, {
@@ -122,6 +132,16 @@ export default class App extends Component {
     return response;
   }
 
+  deleteData = async (data, url) => {
+    console.log("deleting");
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    return response;
+  }
+
   updateLoginStatus = (status, isAdmin, user) => {
     this.setState({
       ...this.state,
@@ -147,7 +167,7 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     const plength = prevState.postArray.length;
     const nlength = this.state.postArray.length;
-    if (plength !== nlength) {
+    if (plength < nlength) {
       const nCar = this.state.postArray[nlength - 1]
       this.postData(nCar, this.state.url).then(
         (res) => {
@@ -158,6 +178,9 @@ export default class App extends Component {
     {
       const nCar = this.state.nCar[0];
       this.putData(nCar, "https://localhost:5001/api/inventory/updatecar");
+    } else if (plength > nlength){
+      const nCar = this.state.nCar[0];
+      this.deleteData(nCar, this.state.url);
     }
   }
   
@@ -180,7 +203,7 @@ export default class App extends Component {
             <Customers users={userData} isAdmin={isAdmin}></Customers>
           </Route>
           <Route path="/CarRules">
-            <CarRules rules={carRules} isAdmin={isAdmin} addCarRule={this.addCarRule}/>
+            <CarRules rules={carRules} isAdmin={isAdmin} deleteCarRule={this.deleteCarRule} addCarRule={this.addCarRule}/>
           </Route>
           <Route path="/">
             <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />

@@ -59,7 +59,7 @@ handleSubmit = (event) => {
                 <td>{rule.make}</td>
                 <td>{rule.model}</td>
                 <td>{rule.color}</td>
-                <td><Button>Delete</Button></td>
+                <td><Button onClick={() => this.props.deleteCarRule(rule)}>Delete</Button></td>
               </tr>
             ))}
           </tbody>

@@ -21,5 +21,11 @@ namespace dealership_app.Controllers
         {
             CarRules.PostCarRule(carRule.name,carRule.startYear,carRule.endYear,carRule.make,carRule.model,carRule.color);
         }
+
+        [HttpDelete("deletecarrule")]
+        public void Delete([FromBody] CarRule carRule)
+        {
+            CarRules.DeleteCarRule(carRule.name);
+        }
     }
 }

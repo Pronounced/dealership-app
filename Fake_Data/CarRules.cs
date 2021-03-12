@@ -59,5 +59,16 @@ namespace dealership_app.Fake_Data
             return rules;
         }
 
+        static public void DeleteCarRule(string name)
+        {
+            foreach (var item in rules)
+            {
+                if(item.name == name)
+                {
+                    rules.Remove(item);
+                }
+            }
+        }
+
     }
 }
