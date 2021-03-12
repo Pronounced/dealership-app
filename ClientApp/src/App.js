@@ -9,6 +9,8 @@ import {
   Route,
 } from "react-router-dom";
 import './custom.css'
+import Customers from './components/Customers';
+import CarRules from './components/CarRules';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -20,7 +22,8 @@ export default class App extends Component {
     nCar: [],
     isLoggedIn: false,
     isAdmin: false,
-    currentUser: null
+    currentUser: null,
+    carRules: []
   }
 
   handleAdd = () => {
@@ -71,6 +74,15 @@ export default class App extends Component {
     return response.json();
   };
 
+  getCarRules = async (url) => {
+    const response = await fetch(url, {
+      headers: {
+        "Content-Type": "application.json",
+      },
+    });
+    return response.json();
+  }
+
   postData = async (data, url) => {
     const response = await fetch(url, {
       method: "POST",
@@ -107,6 +119,9 @@ export default class App extends Component {
     this.getUserData("https://localhost:5001/api/users/").then((data) => {
       this.setState({ ...this.state, userData: data, loading: false });
     });
+    this.getCarRules("https://localhost:5001/api/carrules/").then((data) => {
+      this.setState({ ...this.state, carRules: data, loading: false });
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -128,7 +143,7 @@ export default class App extends Component {
   
 
   render() {
-    const { inventoryData, userData, isAdmin, view, currentUser } = this.state;
+    const { inventoryData, userData, isAdmin, view, currentUser, carRules } = this.state;
     return(
       <Router>
         <Switch>
@@ -140,6 +155,12 @@ export default class App extends Component {
           </Route>
           <Route path="/AddInventory" >
             <AddInventory currentUser={currentUser} addCar={this.addCar} />
+          </Route>
+          <Route path="/Customers">
+            <Customers users={userData}></Customers>
+          </Route>
+          <Route path="/CarRules">
+            <CarRules rules={carRules} isAdmin={isAdmin}/>
           </Route>
           <Route path="/">
             <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />

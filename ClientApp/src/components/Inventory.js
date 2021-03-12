@@ -13,6 +13,8 @@ export class Inventory extends Component {
           <Navbar.Brand as={Link} to="/Inventory">Car Dealership</Navbar.Brand>
           <Nav className="mr-auto">
             {!this.props.isAdmin && <Nav.Link as={Link} to="/UserInventory">See My Cars</Nav.Link>}
+            {this.props.isAdmin && <Nav.Link as={Link} to="/Customers">Customers</Nav.Link>}
+            {this.props.isAdmin && <Nav.Link as={Link} to="/CarRules">Acceptance Rules</Nav.Link>}
             <Nav.Link as={Link} to="/Login">Logout</Nav.Link>
           </Nav>
         </Navbar>
