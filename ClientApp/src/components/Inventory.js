@@ -35,8 +35,8 @@ export class Inventory extends Component {
                 <td>{car.isApproved.toString()}</td>
                 {this.props.isAdmin && 
                   <td>
-                    <Button onClick={() => this.props.updateCar(car.guid,true)}>Approve</Button>
-                    <Button onClick={() => this.props.updateCar(car.guid,false)}>Deny</Button>
+                    <Button onClick={() => this.props.updateCar(car.guid, true)}>Approve</Button>
+                    <Button onClick={() => this.props.updateCar(car.guid, false)}>Deny</Button>
                   </td>
                 }
               </tr>

@@ -40,7 +40,6 @@ export default class App extends Component {
         {
           car.isApproved = status;
         }
-
         return car
       })
     });
@@ -96,11 +95,17 @@ export default class App extends Component {
     return response;
   };
 
-  putDat = async (data, url) => {
-    
+  putData = async (data, url) => {
+    console.log("putting");
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    return response;
   }
 
-  updateLoginStatus = (status, isAdmin, user,) => {
+  updateLoginStatus = (status, isAdmin, user) => {
     this.setState({
       ...this.state,
       isLoggedIn: status,
@@ -129,7 +134,8 @@ export default class App extends Component {
           console.log("posted new car!!", res);
         }
       );
-    } else if( plength !== 0 && plength === nlength) {
+    } else if (plength !== 0 && plength === nlength)
+    {
       
     }
   }
