@@ -45,6 +45,7 @@ export class AddInventory extends Component{
             }
           }
         }
+        return true;
       })
     } else {
       return this.props.addCar(this.state);
