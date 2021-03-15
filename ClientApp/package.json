@@ -15,7 +15,8 @@
     "react-scripts": "^3.4.4",
     "reactstrap": "^8.4.1",
     "rimraf": "^2.7.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "vin-generator": "^1.0.1"
   },
   "devDependencies": {
     "ajv": "^6.9.1",

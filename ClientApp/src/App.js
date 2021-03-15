@@ -27,7 +27,9 @@ export default class App extends Component {
     currentUser: null,
     carRules: [],
     postArray: [],
-    url: null
+    url: null,
+    key: "VA_DEMO_KEY",
+    valueData: ""
   }
 
   handleAdd = () => {
@@ -37,19 +39,21 @@ export default class App extends Component {
     });
   };
 
-  updateCar = (guid, status) => {
+  updateCar = (vin, status) => {
     let copyData = this.state.inventoryData;
     this.setState({
       ...this.state,
       inventoryData: copyData.map(car => {
-        if(car.guid === guid)
+        console.log("car vin", car.vin);
+        console.log("vin", vin);
+        if(car.vin === vin)
         {
           car.isApproved = status;
         }
         return car
       })
     });
-    this.putData(copyData.filter(car => car.guid === guid)[0], "https://localhost:5001/api/inventory/updatecar");
+    this.putData(copyData.filter(car => car.vin === vin)[0], "https://localhost:5001/api/inventory/updatecar");
   }
 
   addCar = (car) => {
@@ -77,6 +81,17 @@ export default class App extends Component {
       carRules: copyData,
     })
     this.deleteData(rule, 'https://localhost:5001/api/carrules/deletecarrule')
+  }
+
+  getMarketValue = async (car) => {
+    const response = 
+      await fetch("https://marketvalue.vinaudit.com/getmarketvalue.php?key=VA_DEMO_KEY&vin=" + car.vin + "&format=json");
+    return response.json().then((data) => {
+      this.setState({
+        ...this.state,
+        valueData: data.mean
+      })
+    }); 
   }
 
   getInventoryData = async (url) => {
@@ -159,26 +174,18 @@ export default class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // const plength = prevState.postArray.length;
-    // const nlength = this.state.postArray.length;
-    // if (plength < nlength) {
-    //   const nCar = this.state.postArray[nlength - 1]
-    //   this.postData(nCar, this.state.url);
-    // } else if (plength > nlength){
-    //   const nCar = this.state.nCar[0];
-    //   this.deleteData(nCar, this.state.url);
-    // }
+
   }
   
 
   render() {
-    const { inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn } = this.state;
+    const { inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn, valueData } = this.state;
     return(
       <Router>
         <Layout updateLoginStatus={this.updateLoginStatus} isLoggedIn={isLoggedIn} isAdmin={isAdmin}>
           <Switch>
             <Route path="/Inventory" >
-              <Inventory currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+              <Inventory valueData={valueData} getMarketValue={this.getMarketValue} currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
             </Route>
             <Route path="/UserInventory" >
               <UserInventory rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Card, Container, Alert} from 'react-bootstrap';
-import {v4 as uuidv4} from 'uuid';
-//import { Redirect } from 'react-router-dom';
-
+import vinGenerator from 'vin-generator';
                               
 export class AddInventory extends Component{
   static displayName = AddInventory.name;
@@ -13,7 +11,7 @@ export class AddInventory extends Component{
       model: "",
       color: "",
       seller: this.props.currentUser,
-      guid: uuidv4(),
+      vin: vinGenerator.generateVin(),
       isApproved: "",
       alert: false,
       alertMessage: [],
@@ -27,8 +25,6 @@ export class AddInventory extends Component{
       isApproved: this.props.isAdmin ? true : false
     });
   };
-
-
 
   handleSubmit = (event) => {
     event.preventDefault();

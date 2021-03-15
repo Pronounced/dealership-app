@@ -19,13 +19,13 @@ namespace dealership_app.Controllers
         [HttpPost("addcar")]
         public void Post([FromBody]Car car)
         {
-            Inventory.PostCar(car.year,car.make,car.model,car.seller,car.guid,car.isApproved,car.color);
+            Inventory.PostCar(car.year,car.make,car.model,car.seller,car.vin,car.isApproved,car.color);
         }
 
         [HttpPut("updatecar")]
         public void Put([FromBody] Car car)
         {
-            Inventory.UpdateCar(car.isApproved, car.guid);
+            Inventory.UpdateCar(car.isApproved, car.vin);
         }
     }
 }

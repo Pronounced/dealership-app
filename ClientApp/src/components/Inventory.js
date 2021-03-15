@@ -16,7 +16,8 @@ export class Inventory extends Component {
               <th>Model</th>
               <th>Color</th>
               <th>Approved</th>
-              
+              <th>Market Value</th>
+              <th>Get Market Value</th>
               {this.props.isAdmin && <th>Set Status</th>}
             </tr>
           </thead>
@@ -30,10 +31,12 @@ export class Inventory extends Component {
                 <td>{car.isApproved.toString()}</td>
                 {this.props.isAdmin && 
                   <td>
-                    <Button onClick={() => this.props.updateCar(car.guid, true)}>Approve</Button>
-                    <Button onClick={() => this.props.updateCar(car.guid, false)}>Deny</Button>
+                    <Button onClick={() => this.props.updateCar(car.vin, true)}>Approve</Button>
+                    <Button onClick={() => this.props.updateCar(car.vin, false)}>Deny</Button>
                   </td>
                 }
+                <td>{ && this.props.valueData}</td>
+                <td><Button onClick={() => this.props.getMarketValue(car)}>Test</Button></td>
               </tr>
             ))}
           </tbody>    
