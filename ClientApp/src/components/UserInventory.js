@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Accordion, Card, Button, Navbar, Nav } from 'react-bootstrap';
+import { Table, Accordion, Card, Button } from 'react-bootstrap';
 import { AddInventory } from './AddInventory';
-import { Link } from 'react-router-dom';
 
 export class UserInventory extends Component {
   static displayName = UserInventory.name;
@@ -9,13 +8,6 @@ export class UserInventory extends Component {
   render() {
     return (
        <div>
-       <Navbar bg="dark" variant="dark">
-          <Navbar.Brand as={Link} to="/Inventory">Car Dealership</Navbar.Brand>
-          <Nav className="mr-auto">
-            {!this.props.isAdmin && <Nav.Link as={Link} to="/Inventory">See Inventory</Nav.Link>}
-            <Nav.Link as={Link} to="/Login">Logout</Nav.Link> {/*href to clear state */}
-          </Nav>
-        </Navbar>
         <Table striped bordered hover variant="dark">
           <thead>
             <tr>

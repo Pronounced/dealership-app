@@ -11,6 +11,8 @@ import {
 import './custom.css'
 import Customers from './components/Customers';
 import CarRules from './components/CarRules';
+import ContactUs from './components/ContactUs';
+import Layout from './components/Layout';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -139,7 +141,6 @@ export default class App extends Component {
       isLoggedIn: status,
       isAdmin: isAdmin,
       currentUser: user,
-      view: 'Inventory'
     });
   }
 
@@ -171,29 +172,34 @@ export default class App extends Component {
   
 
   render() {
-    const { inventoryData, userData, isAdmin, view, currentUser, carRules } = this.state;
+    const { inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn } = this.state;
     return(
       <Router>
-        <Switch>
-          <Route path="/Inventory" >
-            <Inventory currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
-          </Route>
-          <Route path="/UserInventory" >
-            <UserInventory rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
-          </Route>
-          <Route path="/AddInventory" >
-            <AddInventory currentUser={currentUser} addCar={this.addCar} rules={carRules} />
-          </Route>
-          <Route path="/Customers">
-            <Customers users={userData} isAdmin={isAdmin}></Customers>
-          </Route>
-          <Route path="/CarRules">
-            <CarRules rules={carRules} isAdmin={isAdmin} deleteCarRule={this.deleteCarRule} addCarRule={this.addCarRule}/>
-          </Route>
-          <Route path="/">
-            <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />
-          </Route>
-        </Switch>
+        <Layout updateLoginStatus={this.updateLoginStatus} isLoggedIn={isLoggedIn} isAdmin={isAdmin}>
+          <Switch>
+            <Route path="/Inventory" >
+              <Inventory currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+            </Route>
+            <Route path="/UserInventory" >
+              <UserInventory rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
+            </Route>
+            <Route path="/AddInventory" >
+              <AddInventory currentUser={currentUser} addCar={this.addCar} rules={carRules} />
+            </Route>
+            <Route path="/Customers">
+              <Customers users={userData} isAdmin={isAdmin}></Customers>
+            </Route>
+            <Route path="/CarRules">
+              <CarRules rules={carRules} isAdmin={isAdmin} deleteCarRule={this.deleteCarRule} addCarRule={this.addCarRule}/>
+            </Route>
+            <Route path="/ContactUs">
+              <ContactUs />
+            </Route>
+            <Route path="/">
+              <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />
+            </Route>
+          </Switch>
+        </Layout>
       </Router>
     )
   }
