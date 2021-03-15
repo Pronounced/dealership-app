@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, Row, Col, Card, Container} from 'react-bootstrap';
+import { Button, Form, Row, Col, Card, Container, Alert} from 'react-bootstrap';
 import {v4 as uuidv4} from 'uuid';
 //import { Redirect } from 'react-router-dom';
 
@@ -14,7 +14,9 @@ export class AddInventory extends Component{
       color: "",
       seller: this.props.currentUser,
       guid: uuidv4(),
-      isApproved: ""
+      isApproved: "",
+      alert: null,
+      alertMessage: []
     }
 
   handleChange = ({target}) => {
@@ -30,23 +32,38 @@ export class AddInventory extends Component{
 
   handleSubmit = (event) => {
     event.preventDefault();
+    var messageArray = []
+    
     if(!this.props.isAdmin) {
       this.props.rules.map((rule) => {
-        if(parseInt(rule.startYear)<= parseInt(this.state.year) && parseInt(rule.endYear)>= parseInt(this.state.year))
+        if(parseInt(rule.startYear)<= parseInt(this.state.year) && parseInt(rule.endYear)>= parseInt(this.state.year)){}
+        else {
+          if(!messageArray.includes("Outside year range")){
+          messageArray.push("Outside year range")}}
+        if(rule.make === this.state.make){}
+        else{
+        if(!messageArray.includes("Make not accepted")){
+          messageArray.push("Make not accepted")}}  
+        if(rule.model === this.state.model){}
+        else{
+          if(!messageArray.includes("Model not accepted")){
+          messageArray.push("Model not accepted")}}   
+        if(rule.color === this.state.color){}
+        else{
+          if(!messageArray.includes("Color not accepted")){
+          messageArray.push("Color not accepted")}}      
+        if (!this.state.alertMessage)
         {
-          if(rule.make === this.state.make)
-          {
-            if(rule.model === this.state.model)
-            {
-              if(rule.color === this.state.color)
-              {
-                return this.props.addCar(this.state);
-              }
-            }
-          }
+          return this.props.addCar(this.state);
+        } else{
+          this.setState({
+            alert:true, alertMessage: messageArray
+          })
         }
+             
         return true;
-      })
+      }
+    )
     } else {
       return this.props.addCar(this.state);
     }
@@ -55,7 +72,14 @@ export class AddInventory extends Component{
   render() {
     return (
       <div>
+        
         <Container fluid>
+          <Alert show={this.state.alert} variant="danger">
+          <Alert.Heading>Car was denied</Alert.Heading>
+            {this.state.alertMessage.map(item =>
+              <p>{item}</p>
+            )} 
+          </Alert>
           <Row style={{ height: '15vh'}}></Row>
           <Row>
           <Col></Col>
@@ -82,6 +106,7 @@ export class AddInventory extends Component{
             <Col></Col>
           </Row>
         </Container>
+
       </div>
     );
   }
