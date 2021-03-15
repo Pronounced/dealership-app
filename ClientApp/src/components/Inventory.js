@@ -35,8 +35,8 @@ export class Inventory extends Component {
                     <Button onClick={() => this.props.updateCar(car.vin, false)}>Deny</Button>
                   </td>
                 }
-                <td>{ && this.props.valueData}</td>
-                <td><Button onClick={() => this.props.getMarketValue(car)}>Test</Button></td>
+                <td>{car.vin === this.props.valueKey && this.props.valueData}</td>
+                <td><Button onClick={() => this.props.getMarketValue(car)}>Get Value</Button></td>
               </tr>
             ))}
           </tbody>    

@@ -29,7 +29,8 @@ export default class App extends Component {
     postArray: [],
     url: null,
     key: "VA_DEMO_KEY",
-    valueData: ""
+    valueData: "",
+    valueKey: null
   }
 
   handleAdd = () => {
@@ -89,7 +90,8 @@ export default class App extends Component {
     return response.json().then((data) => {
       this.setState({
         ...this.state,
-        valueData: data.mean
+        valueData: data.mean,
+        valueKey: car.vin
       })
     }); 
   }
@@ -179,13 +181,13 @@ export default class App extends Component {
   
 
   render() {
-    const { inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn, valueData } = this.state;
+    const { valueKey, inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn, valueData } = this.state;
     return(
       <Router>
         <Layout updateLoginStatus={this.updateLoginStatus} isLoggedIn={isLoggedIn} isAdmin={isAdmin}>
           <Switch>
             <Route path="/Inventory" >
-              <Inventory valueData={valueData} getMarketValue={this.getMarketValue} currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+              <Inventory valueKey={valueKey} valueData={valueData} getMarketValue={this.getMarketValue} currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
             </Route>
             <Route path="/UserInventory" >
               <UserInventory rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
