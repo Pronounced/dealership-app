@@ -6,23 +6,26 @@ export class AddInventory extends Component{
   static displayName = AddInventory.name;
 
     state = {
-      year: "",
-      make: "",
-      model: "",
-      color: "",
-      seller: this.props.currentUser,
-      vin: vinGenerator.generateVin(),
-      isApproved: "",
+      car: {
+        year: "",
+        make: "",
+        model: "",
+        color: "",
+        seller: this.props.currentUser,
+        vin: vinGenerator.generateVin(),
+        isApproved: this.props.isAdmin ? true : false,
+      },
       alert: false,
-      alertMessage: [],
     }
 
   handleChange = ({target}) => {
     const name = target.name
     const value = target.value
-    this.setState({...this.state, [name]: value, 
+    var carState = {...this.state.car};
+    carState[name] = value;
+    this.setState({
       seller: this.props.currentUser,
-      isApproved: this.props.isAdmin ? true : false
+      car: carState
     });
   };
 
@@ -31,14 +34,14 @@ export class AddInventory extends Component{
     
     if(!this.props.isAdmin) {
       this.props.rules.map((rule) => {
-        if(parseInt(rule.startYear)<= parseInt(this.state.year) && parseInt(rule.endYear)>= parseInt(this.state.year)){
-          if(rule.make === this.state.make)
+        if(parseInt(rule.startYear)<= parseInt(this.state.car.year) && parseInt(rule.endYear)>= parseInt(this.state.car.year)){
+          if(rule.make === this.state.car.make)
           {
-            if(rule.model === this.state.model)
+            if(rule.model === this.state.car.model)
             {
-              if(rule.color === this.state.color)
+              if(rule.color === this.state.car.color)
               {
-                return this.props.addCar(this.state);
+                return this.props.addCar(this.state.car);
               }
             }
           }
@@ -51,7 +54,7 @@ export class AddInventory extends Component{
         return true;
       }
     )} else {
-      return this.props.addCar(this.state);
+      return this.props.addCar(this.state.car);
     }
   }
 
