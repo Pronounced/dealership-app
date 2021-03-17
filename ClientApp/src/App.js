@@ -54,7 +54,7 @@ export default class App extends Component {
         return car
       })
     });
-    this.putData(copyData.filter(car => car.vin === vin)[0], "http://localhost:3000/putcar");
+    this.putData(copyData.filter(car => car.vin === vin)[0], "http://localhost:3001/putcar");
   }
 
   addCar = (car) => {
@@ -63,7 +63,7 @@ export default class App extends Component {
       showForm: false,
       loading: true,
     });
-    this.postData(car, 'http://localhost:3000/postcar')
+    this.postData(car, 'http://localhost:3001/postcar')
   };
 
   addCarRule = (rule) => {
@@ -71,7 +71,7 @@ export default class App extends Component {
       carRules: this.state.carRules.concat(rule),
       loading: true,
     });
-    this.postData(rule, 'http://localhost:3000/postrule')
+    this.postData(rule, 'http://localhost:3001/postrule')
   };
 
   deleteCarRule = (rule) => {
@@ -81,7 +81,7 @@ export default class App extends Component {
     this.setState({
       carRules: copyData,
     })
-    this.deleteData(rule, 'http://localhost:3000/deleterule')
+    this.deleteData(rule, 'http://localhost:3001/deleterule')
   }
 
   getMarketValue = async (car) => {
@@ -164,13 +164,13 @@ export default class App extends Component {
 
 
   componentDidMount() {
-    this.getInventoryData("http://localhost:3000/").then((data) => {
+    this.getInventoryData("http://localhost:3001/").then((data) => {
       this.setState({ ...this.state, inventoryData: data, loading: false });
     });
-    this.getUserData("http://localhost:3000/getusers").then((data) => {
+    this.getUserData("http://localhost:3001/getusers").then((data) => {
       this.setState({ ...this.state, userData: data, loading: false });
     });
-    this.getCarRules("http://localhost:3000/getrules").then((data) => {
+    this.getCarRules("http://localhost:3001/getrules").then((data) => {
       this.setState({ ...this.state, carRules: data, loading: false });
     });
   }

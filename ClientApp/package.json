@@ -36,7 +36,7 @@
     "extends": "react-app"
   },
   "scripts": {
-    "start": "set PORT=3001 && rimraf ./build && react-scripts start",
+    "start": "set PORT=3000 && rimraf ./build && ./node_modules/.bin/react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env CI=true react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
