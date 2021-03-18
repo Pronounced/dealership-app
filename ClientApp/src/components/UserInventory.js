@@ -41,7 +41,7 @@ export class UserInventory extends Component {
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  <AddInventory isAdmin={this.props.isAdmin} rules={this.props.rules} addCar={this.props.addCar} currentUser={this.props.currentUser}/>
+                  <AddInventory getData={this.props.getData} apiMakes={this.props.apiMakes} isAdmin={this.props.isAdmin} rules={this.props.rules} addCar={this.props.addCar} currentUser={this.props.currentUser}/>
                 </Card.Body>
               </Accordion.Collapse>
             </Card>

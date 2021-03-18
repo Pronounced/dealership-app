@@ -13,6 +13,7 @@ import Customers from './components/Customers';
 import CarRules from './components/CarRules';
 import ContactUs from './components/ContactUs';
 import Layout from './components/Layout';
+import fs from 'fs';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -30,7 +31,10 @@ export default class App extends Component {
     url: null,
     key: "VA_DEMO_KEY",
     valueData: "",
-    valueKey: null
+    valueKey: null,
+    apiMakes: [],
+    apiModels: [],
+    years:[]
   }
 
   handleAdd = () => {
@@ -96,7 +100,7 @@ export default class App extends Component {
     }); 
   }
 
-  getInventoryData = async (url) => {
+  getData = async (url) => {
     const response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -104,24 +108,6 @@ export default class App extends Component {
     });
     return response.json();
   };
-
-  getUserData = async (url) => {
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response.json();
-  };
-
-  getCarRules = async (url) => {
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application.json",
-      },
-    });
-    return response.json();
-  }
 
   postData = async (data, url) => {
     const response = await fetch(url, {
@@ -161,17 +147,18 @@ export default class App extends Component {
     });
   }
 
-
-
   componentDidMount() {
-    this.getInventoryData("http://localhost:3001/").then((data) => {
+    this.getData("http://localhost:3001/").then((data) => {
       this.setState({ ...this.state, inventoryData: data, loading: false });
     });
-    this.getUserData("http://localhost:3001/getusers").then((data) => {
+    this.getData("http://localhost:3001/getusers").then((data) => {
       this.setState({ ...this.state, userData: data, loading: false });
     });
-    this.getCarRules("http://localhost:3001/getrules").then((data) => {
+    this.getData("http://localhost:3001/getrules").then((data) => {
       this.setState({ ...this.state, carRules: data, loading: false });
+    });
+    this.getData("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json").then((data) => {
+      this.setState({...this.state, apiMakes: [data], loading: false });
     });
   }
 
@@ -181,19 +168,16 @@ export default class App extends Component {
   
 
   render() {
-    const { valueKey, inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn, valueData } = this.state;
+    const { valueKey, inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn, valueData, apiMakes } = this.state;
     return(
       <Router>
         <Layout updateLoginStatus={this.updateLoginStatus} isLoggedIn={isLoggedIn} isAdmin={isAdmin}>
           <Switch>
             <Route path="/Inventory" >
-              <Inventory valueKey={valueKey} valueData={valueData} getMarketValue={this.getMarketValue} currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+              <Inventory getData={this.getData} apiMakes={apiMakes} valueKey={valueKey} valueData={valueData} getMarketValue={this.getMarketValue} currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
             </Route>
             <Route path="/UserInventory" >
-              <UserInventory rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
-            </Route>
-            <Route path="/AddInventory" >
-              <AddInventory currentUser={currentUser} addCar={this.addCar} rules={carRules} />
+              <UserInventory getData={this.getData} apiMakes={apiMakes} rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
             </Route>
             <Route path="/Customers">
               <Customers users={userData} isAdmin={isAdmin}></Customers>

@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Card, Container, Alert} from 'react-bootstrap';
 import vinGenerator from 'vin-generator';
+import years from '../years.json'
                               
 export class AddInventory extends Component{
   static displayName = AddInventory.name;
 
     state = {
       car: {
-        year: "",
-        make: "",
+        year: null,
+        make: null,
         model: "",
         color: "",
         seller: this.props.currentUser,
@@ -16,17 +17,27 @@ export class AddInventory extends Component{
         isApproved: this.props.isAdmin ? true : false,
       },
       alert: false,
+      modelData: []
     }
 
   handleChange = ({target}) => {
-    const name = target.name
-    const value = target.value
+    var models = null;
+    const name = target.name;
+    const value = target.value;
     var carState = {...this.state.car};
     carState[name] = value;
     this.setState({
       seller: this.props.currentUser,
-      car: carState
+      car: carState,
     });
+    if(target.name === "make" || target.name === "year")
+    {
+      this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${carState.make}/modelyear/${carState.year}?format=json`)
+      .then((data) => {
+        console.log(data);
+        this.setState({...this.state, modelData: data.Results});
+      });
+    }
   };
 
   handleSubmit = (event) => {
@@ -76,13 +87,38 @@ export class AddInventory extends Component{
                   <Form onSubmit={this.handleSubmit} autoComplete="off">
                     <Form.Group>
                       <Form.Label>Year</Form.Label>
-                      <Form.Control name="year" type="text" onChange={this.handleChange}></Form.Control>
+                      <Form.Control name="year" as="select" onChange={this.handleChange}>
+                        <option>...</option>
+                        {
+                          years[0].years.map(year => {
+                            return <option key={year}>{year}</option>
+                          })
+                        }
+                      </Form.Control>
                       <Form.Label>Make</Form.Label>
-                      <Form.Control name="make" type="text" onChange={this.handleChange}></Form.Control>
+                      <Form.Control name="make" as="select" onChange={this.handleChange}>
+                        <option>...</option>
+                        {this.props.apiMakes[0].Results.map((make, index) => {
+                            return <option key={index} value={make.MakeID}> {make.MakeName} </option>
+                          })
+                        }
+                      </Form.Control>
                       <Form.Label>Model</Form.Label>
-                       <Form.Control name="model" type="text" onChange={this.handleChange}></Form.Control>
+                      <Form.Control name="model" as="select" onChange={this.handleChange}>
+                        <option>...</option>
+                        {this.state.modelData.map((model, index) => {
+                            return <option key={index} value={model.Model_Name}> {model.Model_Name} </option>
+                          })
+                        }
+                      </Form.Control>
                       <Form.Label>Color</Form.Label>
-                      <Form.Control name="color" type="text" onChange={this.handleChange}></Form.Control>
+                      <Form.Control name="color" as="select" onChange={this.handleChange} defaultValue="Choose...">
+                        <option>...</option>
+                        <option value="blue">blue</option>
+                        <option value="yellow">yellow</option>
+                        <option value="green">green</option>
+                        <option value="red">red</option>
+                      </Form.Control>
                       <Button type="submit">Submit</Button>
                     </Form.Group>
                   </Form>
