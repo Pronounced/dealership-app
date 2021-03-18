@@ -1,9 +1,8 @@
 FROM node:latest
-WORKDIR D:/GitHub/my-new-app/dealership-app/ClientApp
-ENV PATH /node_modules/.bin:$PATH
+WORKDIR /ClientApp
+ENV PATH /ClientApp/node_modules/.bin:$PATH
 COPY package*.json ./
-RUN npm install -g rimraf 
-RUN npm install react-scripts
-COPY . .
+RUN npm install
+COPY . ./
 EXPOSE 3000
 CMD ["npm", "start"]
