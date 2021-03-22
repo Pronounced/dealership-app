@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Card, Accordion } from 'react-bootstrap';
+import { Table, Button, Card, Accordion, Image, Col } from 'react-bootstrap';
 import { AddInventory } from './AddInventory';
 
 export class Inventory extends Component {
@@ -15,7 +15,8 @@ export class Inventory extends Component {
               <th>Make</th>
               <th>Model</th>
               <th>Color</th>
-              <th>Approved</th>
+              <th>Image</th>
+              {this.props.isAdmin && <th>Approved</th>}
               <th>Market Value</th>
               <th>Get Market Value</th>
               {this.props.isAdmin && <th>Set Status</th>}
@@ -28,7 +29,10 @@ export class Inventory extends Component {
                 <td>{car.make}</td>
                 <td>{car.model}</td>
                 <td>{car.color}</td>
-                <td>{car.isApproved.toString()}</td>
+                <td style={{width:256, height:256}}>
+                  <Col><Image src={`${car.image}`} fluid/></Col>
+                </td>
+                {this.props.isAdmin && <td>{car.isApproved.toString()}</td>}
                 {this.props.isAdmin && 
                   <td>
                     <Button onClick={() => this.props.updateCar(car.vin, true)}>Approve</Button>

@@ -14,6 +14,7 @@ import CarRules from './components/CarRules';
 import ContactUs from './components/ContactUs';
 import Layout from './components/Layout';
 import fs from 'fs';
+import { Messages } from './components/Messages';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -34,7 +35,8 @@ export default class App extends Component {
     valueKey: null,
     apiMakes: [],
     apiModels: [],
-    years:[]
+    years:[],
+    messages: []
   }
 
   handleAdd = () => {
@@ -77,6 +79,14 @@ export default class App extends Component {
     });
     this.postData(rule, 'http://localhost:3001/postrule')
   };
+
+  addMessage = (message) => {
+    this.setState({
+      messages: this.state.messages.concat(message),
+      loading: true,
+    });
+    this.postData(message, 'http://localhost:3001/postmessage')
+  }
 
   deleteCarRule = (rule) => {
     let copyData = this.state.carRules;
@@ -160,6 +170,9 @@ export default class App extends Component {
     this.getData("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json").then((data) => {
       this.setState({...this.state, apiMakes: [data], loading: false });
     });
+    this.getData("http://localhost:3001/getmessages").then((data) => {
+      this.setState({ ... this.state, messages: data, loading: false});
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -168,7 +181,7 @@ export default class App extends Component {
   
 
   render() {
-    const { valueKey, inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn, valueData, apiMakes } = this.state;
+    const { messages, valueKey, inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn, valueData, apiMakes } = this.state;
     return(
       <Router>
         <Layout updateLoginStatus={this.updateLoginStatus} isLoggedIn={isLoggedIn} isAdmin={isAdmin}>
@@ -186,7 +199,10 @@ export default class App extends Component {
               <CarRules rules={carRules} isAdmin={isAdmin} deleteCarRule={this.deleteCarRule} addCarRule={this.addCarRule}/>
             </Route>
             <Route path="/ContactUs">
-              <ContactUs />
+              <ContactUs addMessage={this.addMessage}/>
+            </Route>
+            <Route path="/Messages">
+              <Messages messages={messages}/>
             </Route>
             <Route path="/">
               <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />

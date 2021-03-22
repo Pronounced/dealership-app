@@ -13,11 +13,13 @@ export class AddInventory extends Component{
         model: "",
         color: "",
         seller: this.props.currentUser,
-        vin: vinGenerator.generateVin(),
+        vin: null,
         isApproved: this.props.isAdmin ? true : false,
+        image: null,
       },
       alert: false,
-      modelData: []
+      alertMessage: "",
+      modelData: [],
     }
 
   handleChange = ({target}) => {
@@ -42,31 +44,62 @@ export class AddInventory extends Component{
 
   handleSubmit = (event) => {
     event.preventDefault();
-    
+    var badVin = null;
     if(!this.props.isAdmin) {
       this.props.rules.map((rule) => {
-        if(parseInt(rule.startYear)<= parseInt(this.state.car.year) && parseInt(rule.endYear)>= parseInt(this.state.car.year)){
+        if(rule.startYear <= parseInt(this.state.car.year) && rule.endYear >= parseInt(this.state.car.year)){
           if(rule.make === this.state.car.make)
           {
+            console.log("make", this.state.car.make);
             if(rule.model === this.state.car.model)
             {
               if(rule.color === this.state.car.color)
               {
-                return this.props.addCar(this.state.car);
+                if(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make === this.state.car.make)
+                {
+                  console.log(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make === this.state.car.make);
+                  return this.props.addCar(this.state.car);
+                }
+                else {
+                  badVin = true;
+                }
+              } else {
+                badVin = false;
               }
+            } else {
+              badVin = false;
             }
+          } else {
+            badVin = false;
           }
         }
-        else {
+        if(badVin !== null){
           this.setState({
+            alertMessage: badVin ? "VIN is not valid" : "We are not accepting vehicles of this type at the moment",
             alert:true
-          })
+          });
         }
         return true;
       }
-    )} else {
-      return this.props.addCar(this.state.car);
+    )
+  } else {
+      if(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make === this.state.car.make)
+      {
+        console.log(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make === this.state.car.make);
+        return this.props.addCar(this.state.car);
+      }
+      else {
+        badVin = true;
+        this.setState({
+          alertMessage: badVin ? "VIN is not valid" : "We are not accepting vehicles of this type at the moment",
+          alert:true
+        })
+      }
     }
+  }
+
+  handleUpload = (event) => {
+    
   }
 
   render() {
@@ -75,17 +108,19 @@ export class AddInventory extends Component{
         <Container fluid>
           <Alert show={this.state.alert} variant="danger">
           <Alert.Heading>Car was denied</Alert.Heading>
-            <p>We are not accepting vehicles of this type at the moment</p>
+            <p>{this.state.alertMessage}</p>
           </Alert>
           <Row style={{ height: '5vh'}}></Row>
           <Row>
           <Col></Col>
             <Col md="auto">
-              <Card style={{ width: '18rem'}}>
+              <Card style={{ width: '25rem'}}>
                 <Card.Header as="h5">Add Car</Card.Header>
                 <Card.Body>
                   <Form onSubmit={this.handleSubmit} autoComplete="off">
                     <Form.Group>
+                      <Form.Label>VIN</Form.Label>
+                      <Form.Control name="vin" onChange={this.handleChange} minLength="17" maxLength="17"/>
                       <Form.Label>Year</Form.Label>
                       <Form.Control name="year" as="select" onChange={this.handleChange}>
                         <option>...</option>
@@ -119,6 +154,12 @@ export class AddInventory extends Component{
                         <option value="green">green</option>
                         <option value="red">red</option>
                       </Form.Control>
+                      <Form.Label>Input Image URL</Form.Label>
+                      <Form.Control name="image" onChange={this.handleChange} />
+                      {/* <div>
+                        <Form.File name="image" label="Upload Car Picture(Max Size: 16MB)" onChange={this.handleChange} />
+                        <Button variant="secondary" onClick={this.handleUpload}>Upload</Button>
+                      </div> */}
                       <Button type="submit">Submit</Button>
                     </Form.Group>
                   </Form>

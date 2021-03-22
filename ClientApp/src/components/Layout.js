@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 
 
 export default class Layout extends Component {
@@ -17,6 +17,7 @@ export default class Layout extends Component {
             {!this.props.isAdmin && <Nav.Link as={Link} to="/ContactUs">Contact Us</Nav.Link>}
             {this.props.isAdmin && <Nav.Link as={Link} to="/Customers">Customers</Nav.Link>}
             {this.props.isAdmin && <Nav.Link as={Link} to="/CarRules">Acceptance Rules</Nav.Link>}
+            {this.props.isAdmin && <Nav.Link as={Link} to="/Messages">Messages</Nav.Link>}
             <Nav.Link as={Link} to="/Login" onClick={() => this.props.updateLoginStatus(false,false,null)}>Logout</Nav.Link>
           </Nav>
         </Navbar> }

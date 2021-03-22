@@ -6,13 +6,14 @@ export default class ContactUs extends Component {
 
   state = {
     name: "",
-    phone: "",
+    phoneNumber: "",
     email: "",
     message: ""
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
+    return this.props.addMessage(this.state);
   }
 
   handleChange = ({target}) => {
@@ -44,7 +45,7 @@ export default class ContactUs extends Component {
                 <Form.Label>Name</Form.Label>
                 <Form.Control name="name" type="text" placeholder="First Last" onChange={this.handleChange} required></Form.Control>
                 <Form.Label>Phone Number</Form.Label>
-                <Form.Control name="phone" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890" onChange={this.handleChange} required></Form.Control>
+                <Form.Control name="phoneNumber" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890" onChange={this.handleChange} required></Form.Control>
                 <Form.Label>Email</Form.Label>
                 <Form.Control name="email" type="email" placeholder="example@email.com" onChange={this.handleChange} required></Form.Control>
                 <Form.Label>Message</Form.Label>
