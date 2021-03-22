@@ -48,17 +48,20 @@ export class AddInventory extends Component{
     if(!this.props.isAdmin) {
       this.props.rules.map((rule) => {
         if(rule.startYear <= parseInt(this.state.car.year) && rule.endYear >= parseInt(this.state.car.year)){
-          if(rule.make === this.state.car.make)
+          if(rule.make.toLowerCase() === this.state.car.make.toLowerCase())
           {
             console.log("make", this.state.car.make);
-            if(rule.model === this.state.car.model)
+            if(rule.model.toLowerCase() === this.state.car.model.toLowerCase())
             {
-              if(rule.color === this.state.car.color)
+              if(rule.color.toLowerCase() === this.state.car.color.toLowerCase())
               {
-                if(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make === this.state.car.make)
-                {
-                  console.log(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make === this.state.car.make);
-                  return this.props.addCar(this.state.car);
+                var vinData = this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make;
+                if(vinData) {
+                  if(vinData.toLowerCase() === this.state.car.make.toLowerCase())
+                  {
+                    console.log(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make.toLowerCase() === this.state.car.make.toLowerCase());
+                    return this.props.addCar(this.state.car);
+                  }
                 }
                 else {
                   badVin = true;
