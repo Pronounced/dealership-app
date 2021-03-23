@@ -9,7 +9,7 @@ export class Inventory extends Component {
   render() {
     return (
        <div>
-        <Table id="table-to-xls" striped bordered hover variant="dark">
+        <Table id="table-to-xls" responsive striped bordered hover variant="dark">
           <thead>
             <tr>
               <th>Year</th>

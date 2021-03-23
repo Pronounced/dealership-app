@@ -42,10 +42,11 @@ export class AddInventory extends Component{
     }
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async(event) => {
     event.preventDefault();
     var badVin = null;
-    var vinData = this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make;
+    var vinData = await this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`);
+    console.log("vin",vinData)
     if(!this.props.isAdmin) {
       this.props.rules.map((rule) => {
         if(rule.startYear <= parseInt(this.state.car.year) && rule.endYear >= parseInt(this.state.car.year)){
@@ -57,7 +58,7 @@ export class AddInventory extends Component{
               if(rule.color.toLowerCase() === this.state.car.color.toLowerCase())
               {
                 if(vinData) {
-                  if(vinData.toLowerCase() === this.state.car.make.toLowerCase())
+                  if(vinData.Results[0].Make.toLowerCase() === this.state.car.make.toLowerCase())
                   {
                     console.log(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make.toLowerCase() === this.state.car.make.toLowerCase());
                     return this.props.addCar(this.state.car);
@@ -90,8 +91,9 @@ export class AddInventory extends Component{
     )
   } 
   else {
-     if(vinData) {
-        if(vinData.toLowerCase() === this.state.car.make.toLowerCase())
+     if(vinData) 
+     { console.log(vinData)
+        if(vinData.Results[0].Make.toLowerCase() === this.state.car.make.toLowerCase())
         {
           console.log(vinData === this.state.car.make);
           return this.props.addCar(this.state.car);
@@ -130,7 +132,7 @@ export class AddInventory extends Component{
           <Row>
           <Col></Col>
             <Col md="auto">
-              <Card style={{ width: '25rem'}}>
+              <Card >
                 <Card.Header as="h5">Add Car</Card.Header>
                 <Card.Body>
                   <Form onSubmit={this.handleSubmit} autoComplete="off">

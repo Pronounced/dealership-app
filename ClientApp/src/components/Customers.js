@@ -7,7 +7,7 @@ export default class Customers extends Component {
   render() {
     return(
       <div>
-        <Table className="text-center" striped bordered hover variant="dark">
+        <Table responsive className="text-center" striped bordered hover variant="dark">
           <thead>
             <tr>
               <th>Username</th>

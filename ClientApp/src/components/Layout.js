@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 
 
 export default class Layout extends Component {
@@ -9,8 +10,10 @@ export default class Layout extends Component {
   render () {
     return (
       <div>
-        { this.props.isLoggedIn && <Navbar bg="dark" variant="dark">
+        { this.props.isLoggedIn && <Navbar expand="lg" bg="dark" variant="dark">
           <Navbar.Brand as={Link} to="/Inventory">Car Dealership</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link as={Link} to="/Inventory">See Inventory</Nav.Link>
             {!this.props.isAdmin && <Nav.Link as={Link} to="/UserInventory">See My Cars</Nav.Link>}
@@ -20,6 +23,7 @@ export default class Layout extends Component {
             {this.props.isAdmin && <Nav.Link as={Link} to="/Messages">Messages</Nav.Link>}
             <Nav.Link as={Link} to="/Login" onClick={() => this.props.updateLoginStatus(false,false,null)}>Logout</Nav.Link>
           </Nav>
+          </Navbar.Collapse>
         </Navbar> }
         {this.props.children}
       </div>

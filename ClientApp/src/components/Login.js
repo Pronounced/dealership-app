@@ -52,7 +52,8 @@ export default class Login extends React.Component {
           <Row>
           <Col></Col>
             <Col md="auto">
-              <Card style={{ width: '18rem'}}>
+              <Col></Col>
+              <Card >
                 <Card.Header as="h5">Login</Card.Header>
                 <Card.Body>
                   <Form name="loginForm" onSubmit={this.handleSubmit} autoComplete="off">
@@ -69,6 +70,7 @@ export default class Login extends React.Component {
                   <Link to="/Inventory"><Button onClick={this.skip}>Skip</Button></Link>
                 </Card.Footer>
               </Card>
+              <Col></Col>
             </Col>
             <Col></Col>
           </Row>
