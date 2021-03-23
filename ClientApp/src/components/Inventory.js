@@ -9,7 +9,6 @@ export class Inventory extends Component {
   render() {
     return (
        <div>
-        
         <Table id="table-to-xls" striped bordered hover variant="dark">
           <thead>
             <tr>
@@ -17,7 +16,7 @@ export class Inventory extends Component {
               <th>Make</th>
               <th>Model</th>
               <th>Color</th>
-              <th>Image</th>
+              {/* <th>Image</th> */}
               {this.props.isAdmin && <th>Approved</th>}
               {this.props.isAdmin && <th>Set Status</th>}
               <th>Market Value</th>
@@ -31,9 +30,9 @@ export class Inventory extends Component {
                 <td>{car.make}</td>
                 <td>{car.model}</td>
                 <td>{car.color}</td>
-                <td style={{width:256, height:256}}>
+                {/* <td style={{width:256, height:256}}>
                   <Col><Image src={`${car.image}`} fluid/></Col>
-                </td>
+                </td> */}
                 {this.props.isAdmin && <td>{car.isApproved.toString()}</td>}
                 {this.props.isAdmin && 
                   <td>

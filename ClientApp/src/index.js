@@ -7,10 +7,11 @@ import registerServiceWorker from './registerServiceWorker';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
+const connection = "192.168.1.65";
 
 ReactDOM.render(
   <BrowserRouter basename={baseUrl}>
-    <App />
+    <App connection={connection}/>
   </BrowserRouter>,
   rootElement);
 
