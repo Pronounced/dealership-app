@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Card, Accordion, Image, Col } from 'react-bootstrap';
 import { AddInventory } from './AddInventory';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 export class Inventory extends Component {
   static displayName = Inventory.name;
@@ -8,7 +9,8 @@ export class Inventory extends Component {
   render() {
     return (
        <div>
-        <Table striped bordered hover variant="dark">
+        
+        <Table id="table-to-xls" striped bordered hover variant="dark">
           <thead>
             <tr>
               <th>Year</th>
@@ -17,9 +19,9 @@ export class Inventory extends Component {
               <th>Color</th>
               <th>Image</th>
               {this.props.isAdmin && <th>Approved</th>}
+              {this.props.isAdmin && <th>Set Status</th>}
               <th>Market Value</th>
               <th>Get Market Value</th>
-              {this.props.isAdmin && <th>Set Status</th>}
             </tr>
           </thead>
           <tbody>
@@ -45,6 +47,14 @@ export class Inventory extends Component {
             ))}
           </tbody>    
         </Table>
+        <ReactHTMLTableToExcel
+          id="inventorytable"
+          className="btn btn-primary"
+          table="table-to-xls"
+          filename="tablexls"
+          sheet="tablexls"
+          buttonText="Download as XLS"
+        />
         {this.props.isAdmin && 
           <Accordion defaultActiveKey="1">
               <Card>

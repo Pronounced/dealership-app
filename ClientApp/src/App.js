@@ -51,8 +51,6 @@ export default class App extends Component {
     this.setState({
       ...this.state,
       inventoryData: copyData.map(car => {
-        console.log("car vin", car.vin);
-        console.log("vin", vin);
         if(car.vin === vin)
         {
           car.isApproved = status;

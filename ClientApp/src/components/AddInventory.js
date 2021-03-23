@@ -45,6 +45,7 @@ export class AddInventory extends Component{
   handleSubmit = (event) => {
     event.preventDefault();
     var badVin = null;
+    var vinData = this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make;
     if(!this.props.isAdmin) {
       this.props.rules.map((rule) => {
         if(rule.startYear <= parseInt(this.state.car.year) && rule.endYear >= parseInt(this.state.car.year)){
@@ -55,12 +56,14 @@ export class AddInventory extends Component{
             {
               if(rule.color.toLowerCase() === this.state.car.color.toLowerCase())
               {
-                var vinData = this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make;
                 if(vinData) {
                   if(vinData.toLowerCase() === this.state.car.make.toLowerCase())
                   {
                     console.log(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make.toLowerCase() === this.state.car.make.toLowerCase());
                     return this.props.addCar(this.state.car);
+                  }
+                  else {
+                    badVin = true;
                   }
                 }
                 else {
@@ -85,12 +88,22 @@ export class AddInventory extends Component{
         return true;
       }
     )
-  } else {
-      if(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make === this.state.car.make)
-      {
-        console.log(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make === this.state.car.make);
-        return this.props.addCar(this.state.car);
-      }
+  } 
+  else {
+     if(vinData) {
+        if(vinData.toLowerCase() === this.state.car.make.toLowerCase())
+        {
+          console.log(vinData === this.state.car.make);
+          return this.props.addCar(this.state.car);
+        }
+        else {
+          badVin = true;
+          this.setState({
+            alertMessage: badVin ? "VIN is not valid" : "We are not accepting vehicles of this type at the moment",
+            alert:true
+          })
+        }
+     }
       else {
         badVin = true;
         this.setState({
