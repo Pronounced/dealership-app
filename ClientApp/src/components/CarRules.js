@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Card, Accordion, Form } from 'react-bootstrap';
+import { Table, Button, Card, Accordion, Form, Col, Row, Container } from 'react-bootstrap';
 
 export default class CarRules extends Component {
   static displayName = CarRules.name;
@@ -55,7 +55,10 @@ handleSubmit = (event) => {
             ))}
           </tbody>
         </Table>
+          
           <Accordion defaultActiveKey="1">
+          
+            
               <Card>
                 <Card.Header>
                   <Accordion.Toggle as={Button} variant="link" eventKey="0">
@@ -64,8 +67,14 @@ handleSubmit = (event) => {
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                  <Card style={{ width: '18rem'}}>
+                  <Container fluid>
+                  <Row>
+                    <Col></Col>
+                    <Col md="auto">
+                  <Card >
                 <Card.Body>
+                
+                  
                   <Form onSubmit={this.handleSubmit} autoComplete="off">
                     <Form.Group>
                       <Form.Label>Name</Form.Label>
@@ -83,12 +92,21 @@ handleSubmit = (event) => {
                       <Button type="submit">Submit</Button>
                     </Form.Group>
                   </Form>
+                  
                 </Card.Body>
               </Card>
+              </Col>
+              <Col></Col>
+              </Row>
+              </Container>  
                   </Card.Body>
                 </Accordion.Collapse>
               </Card>
+              
+            
+         
           </Accordion>
+          
       </div>
     )
   }
