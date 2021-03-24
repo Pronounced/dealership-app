@@ -1,17 +1,22 @@
-import React from 'react'
-import { shallow } from 'enzyme'
-import Login from './components/Login'
+import React from 'react';
+import { shallow } from 'enzyme';
+import Login from './components/Login';
+import { idText } from 'typescript';
 
 describe('Login', () => {
   let loginWrapper;
   let loginState;
   beforeAll(() => {
-    loginWrapper = shallow(<Login />);
+  loginWrapper = shallow(<Login users={[{username:"1", password:"1"}]} updateLoginStatus={jest.fn(() => true)}/>);
     loginState = loginWrapper.state();
   });
 
+  it('To have at least one Form.Control', () => {
+    expect(loginWrapper.find('FormControl').length).toBeGreaterThan(0);
+  })
+
   it('To have 2 inputs and 2 button', () => {
-    const loginInputs = loginWrapper.find('Form.Control');
+    const loginInputs = loginWrapper.find('FormControl');
     const loginButton = loginWrapper.find('Button')
     expect(loginInputs.length).toBe(2);
     expect(loginButton.length).toBe(2);
@@ -30,28 +35,13 @@ describe('Login', () => {
   });
 
   it('state has value input in username field', () => {
-    loginWrapper.find('Form.Control[type="text"]').simulate('change', {target: {name: 'username', value: 'krishankantsinghal'}});
+    loginWrapper.find('FormControl[type="text"]').simulate('change', {target: {name: 'username', value: 'krishankantsinghal'}});
     expect(loginWrapper.state('username')).toEqual('krishankantsinghal');
   });
 
   it('state has value input in password field', () => {
-    loginWrapper.find('Form.Control[type="text"]').simulate('change', {target: {name: 'password', value: 'testpass'}});
+    loginWrapper.find('FormControl[type="text"]').simulate('change', {target: {name: 'password', value: 'testpass'}});
     expect(loginWrapper.state('password')).toEqual('testpass');
-  });
-
-  it('can fetch from api', () => {
-    expect(loginWrapper.props.userData.length).toBe(2);
-  });
-
-  it('user can login', () => {
-    loginState.username = "1";
-    loginState.password = "1"
-    loginWrapper.find('Form').simulate('submit', {target: {name:'loginForm'}});
-    expect(loginState.isLogined).toBe(true);
-  });
-
-  it('', () => {
-
   });
   
 })
