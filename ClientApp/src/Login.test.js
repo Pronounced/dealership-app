@@ -10,11 +10,11 @@ describe('Login', () => {
     loginState = loginWrapper.state();
   });
 
-  it('To have 2 inputs and 1 button', () => {
-    const loginInputs = loginWrapper.find('input');
-    const loginButton = loginWrapper.find('button')
+  it('To have 2 inputs and 2 button', () => {
+    const loginInputs = loginWrapper.find('Form.Control');
+    const loginButton = loginWrapper.find('Button')
     expect(loginInputs.length).toBe(2);
-    expect(loginButton.length).toBe(1);
+    expect(loginButton.length).toBe(2);
   });
 
   it('has state', () => {
@@ -30,23 +30,23 @@ describe('Login', () => {
   });
 
   it('state has value input in username field', () => {
-    loginWrapper.find('input[type="text"]').simulate('change', {target: {name: 'username', value: 'krishankantsinghal'}});
+    loginWrapper.find('Form.Control[type="text"]').simulate('change', {target: {name: 'username', value: 'krishankantsinghal'}});
     expect(loginWrapper.state('username')).toEqual('krishankantsinghal');
   });
 
   it('state has value input in password field', () => {
-    loginWrapper.find('input[type="text"]').simulate('change', {target: {name: 'password', value: 'testpass'}});
+    loginWrapper.find('Form.Control[type="text"]').simulate('change', {target: {name: 'password', value: 'testpass'}});
     expect(loginWrapper.state('password')).toEqual('testpass');
   });
 
   it('can fetch from api', () => {
-    expect(loginState.userList.length).toBe(0);
+    expect(loginWrapper.props.userData.length).toBe(2);
   });
 
   it('user can login', () => {
-    loginState.username = "TestUser 1";
+    loginState.username = "1";
     loginState.password = "1"
-    loginWrapper.find('form').simulate('submit', {target: {name:'loginForm'}});
+    loginWrapper.find('Form').simulate('submit', {target: {name:'loginForm'}});
     expect(loginState.isLogined).toBe(true);
   });
 
