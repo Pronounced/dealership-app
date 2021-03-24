@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
-
 
 export default class Layout extends Component {
   static displayName = Layout.name;
