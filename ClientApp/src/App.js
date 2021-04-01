@@ -13,6 +13,7 @@ import CarRules from './components/CarRules';
 import ContactUs from './components/ContactUs';
 import Layout from './components/Layout';
 import { Messages } from './components/Messages';
+import { Registration } from './components/Registration';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -83,6 +84,14 @@ export default class App extends Component {
     });
     this.postData(message, `${this.props.connection}postmessage`)
   }
+
+  addUser = (user) => {
+    this.setState({
+      userData: this.state.userData.concat(user),
+      loading: true,
+    });
+    this.postData(user, `${this.props.connection}postuser`)
+  };
 
   deleteCarRule = (rule) => {
     let copyData = this.state.carRules;
@@ -200,6 +209,9 @@ export default class App extends Component {
             </Route>
             <Route path="/Messages">
               <Messages messages={messages}/>
+            </Route>
+            <Route path="/Registration">
+              <Registration userData={userData} addUser={this.addUser}/>
             </Route>
             <Route path="/">
               <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />

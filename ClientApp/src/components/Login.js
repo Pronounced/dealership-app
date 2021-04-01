@@ -67,7 +67,8 @@ export default class Login extends React.Component {
                 </Card.Body>
                 <Card.Footer>
                   <Link to="/Inventory"> <Button onClick={this.handleSubmit} block>Submit</Button> </Link>
-                  <Link to="/Inventory"><Button onClick={this.skip}>Skip</Button></Link>
+                  <br></br>
+                  <Link to="/Registration"> <Button block>Register</Button> </Link>
                 </Card.Footer>
               </Card>
               <Col></Col>

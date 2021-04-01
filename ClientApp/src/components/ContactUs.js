@@ -40,12 +40,12 @@ export default class ContactUs extends Component {
           </Card>
           <Card border="light">
             <Card.Title>Leave a Message Below</Card.Title>
-            <Form onSubmit={this.handleSubmit} autoComplete="off">
+            <Form onSubmit={this.handleSubmit}>
               <Form.Group>
                 <Form.Label>Name</Form.Label>
                 <Form.Control name="name" type="text" placeholder="First Last" onChange={this.handleChange} required></Form.Control>
                 <Form.Label>Phone Number</Form.Label>
-                <Form.Control name="phoneNumber" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890" onChange={this.handleChange} required></Form.Control>
+                <Form.Control name="phoneNumber" type="text" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="123-456-7890" onChange={this.handleChange} required></Form.Control>
                 <Form.Label>Email</Form.Label>
                 <Form.Control name="email" type="email" placeholder="example@email.com" onChange={this.handleChange} required></Form.Control>
                 <Form.Label>Message</Form.Label>
