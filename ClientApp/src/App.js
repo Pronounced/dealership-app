@@ -56,7 +56,7 @@ export default class App extends Component {
         return car
       })
     });
-    this.putData(copyData.filter(car => car.vin === vin)[0], `${this.props.connection}:3001/putcar`);
+    this.putData(copyData.filter(car => car.vin === vin)[0], `${this.props.connection}putcar`);
   }
 
   addCar = (car) => {
@@ -65,7 +65,7 @@ export default class App extends Component {
       showForm: false,
       loading: true,
     });
-    this.postData(car, `${this.props.connection}:3001/postcar`)
+    this.postData(car, `${this.props.connection}postcar`)
   };
 
   addCarRule = (rule) => {
@@ -73,7 +73,7 @@ export default class App extends Component {
       carRules: this.state.carRules.concat(rule),
       loading: true,
     });
-    this.postData(rule, `${this.props.connection}:3001/postrule`)
+    this.postData(rule, `${this.props.connection}postrule`)
   };
 
   addMessage = (message) => {
@@ -81,7 +81,7 @@ export default class App extends Component {
       messages: this.state.messages.concat(message),
       loading: true,
     });
-    this.postData(message, `${this.props.connection}:3001/postmessage`)
+    this.postData(message, `${this.props.connection}postmessage`)
   }
 
   deleteCarRule = (rule) => {
@@ -91,7 +91,7 @@ export default class App extends Component {
     this.setState({
       carRules: copyData,
     })
-    this.deleteData(rule, `${this.props.connection}:3001/deleterule`)
+    this.deleteData(rule, `${this.props.connection}deleterule`)
   }
 
   getMarketValue = async (car) => {
@@ -155,19 +155,19 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    this.getData(`${this.props.connection}:3001/getcars`).then((data) => {
+    this.getData(`${this.props.connection}getcars`).then((data) => {
       this.setState({ ...this.state, inventoryData: data, loading: false });
     });
-    this.getData(`${this.props.connection}:3001/getusers`).then((data) => {
+    this.getData(`${this.props.connection}getusers`).then((data) => {
       this.setState({ ...this.state, userData: data, loading: false });
     });
-    this.getData(`${this.props.connection}:3001/getrules`).then((data) => {
+    this.getData(`${this.props.connection}getrules`).then((data) => {
       this.setState({ ...this.state, carRules: data, loading: false });
     });
     this.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json`).then((data) => {
       this.setState({...this.state, apiMakes: [data], loading: false });
     });
-    this.getData(`${this.props.connection}:3001/getmessages`).then((data) => {
+    this.getData(`${this.props.connection}getmessages`).then((data) => {
       this.setState({ ... this.state, messages: data, loading: false});
     })
   }

@@ -7,7 +7,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
-const connection = "http://localhost";
+const connection = `http://localhost:${process.env.REACT_APP_PORT}/`;
 
 ReactDOM.render(
   <BrowserRouter basename={baseUrl}>
