@@ -16,7 +16,6 @@ export class Registration extends Component{
   }
 
   handleSubmit = (event) => {
-    event.preventDefault();
     var error = false;
     this.props.userData.map((user) => {
       if((user.email === this.state.user.email) || (user.username === this.state.user.username)) {
@@ -25,6 +24,8 @@ export class Registration extends Component{
     });
     if(!error) {
       return this.props.addUser(this.state.user);
+    } else{
+      event.preventDefault();
     }
   }
 
@@ -50,7 +51,7 @@ export class Registration extends Component{
             <Card style={{ width: '22rem' }}>
               <Card.Header as="h5">Register</Card.Header>
               <Card.Body>
-                <Form id="regform" name="registrationForm" onSubmit={this.handleSubmit}>
+                <Form id="regform" onSubmit={this.handleSubmit} name="registrationForm">
                   <Form.Group >
                     <Form.Label>Username</Form.Label>
                     <Form.Control name="username" type="text" onChange={this.handleInputChange} autoComplete="new-password" required></Form.Control>
@@ -60,11 +61,12 @@ export class Registration extends Component{
                     <br></br>
                     <Form.Label>Email</Form.Label>
                     <Form.Control name="email" type="email" placeholder="example@email.com" onChange={this.handleInputChange} required></Form.Control>
-                    <br></br>
-                    <Button type="submit" block>Submit</Button>
                   </Form.Group>
                 </Form>
               </Card.Body>
+              <Card.Footer>
+                <Link to="/Login"> <Button onClick={this.handleSubmit} block>Submit</Button> </Link> 
+              </Card.Footer>
             </Card>
             <Col></Col>
           </Col>

@@ -50,7 +50,7 @@ export class AddInventory extends Component{
 
   handleSubmit = async(event) => {
     event.preventDefault();
-    var badVin = null;
+    var badVin = "";
     var vinData = await this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`);
     console.log("vin",vinData)
     if(!this.props.isAdmin) {
@@ -84,8 +84,12 @@ export class AddInventory extends Component{
           } else {
             badVin = false;
           }
+        }else {
+          badVin = false;
         }
-        if(badVin !== null){
+        if(badVin != ""){
+          console.log("alert1")
+
           this.setState({
             alertMessage: badVin ? "VIN is not valid" : "We are not accepting vehicles of this type at the moment",
             alert:true
@@ -106,6 +110,8 @@ export class AddInventory extends Component{
         }
         else {
           badVin = true;
+          console.log("alert2")
+
           this.setState({
             alertMessage: badVin ? "VIN is not valid" : "We are not accepting vehicles of this type at the moment",
             alert:true
@@ -113,6 +119,8 @@ export class AddInventory extends Component{
         }
      }
       else {
+        console.log("alert3")
+
         badVin = true;
         this.setState({
           alertMessage: badVin ? "VIN is not valid" : "We are not accepting vehicles of this type at the moment",
