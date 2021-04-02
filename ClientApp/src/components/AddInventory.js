@@ -6,21 +6,27 @@ import years from '../years.json'
 export class AddInventory extends Component{
   static displayName = AddInventory.name;
 
-    state = {
-      car: {
-        year: null,
-        make: null,
-        model: "",
-        color: "",
-        seller: this.props.currentUser,
-        vin: null,
-        isApproved: this.props.isAdmin ? true : false,
-        image: null,
-      },
-      alert: false,
-      alertMessage: "",
-      modelData: [],
-    }
+  state = {
+    car: {
+      year: "",
+      make: "",
+      model: "",
+      color: "",
+      seller: this.props.currentUser,
+      vin: "",
+      isApproved: this.props.isAdmin ? true : false,
+      image: "",
+    },
+    alert: false,
+    alertMessage: "",
+    modelData: [],
+  }
+
+  handleReset = () => {
+    this.setState({
+      car:{}
+    })
+  }
 
   handleChange = ({target}) => {
     var models = null;
@@ -60,8 +66,7 @@ export class AddInventory extends Component{
                 if(vinData) {
                   if(vinData.Results[0].Make.toLowerCase() === this.state.car.make.toLowerCase())
                   {
-                    console.log(this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`).Make.toLowerCase() === this.state.car.make.toLowerCase());
-                    return this.props.addCar(this.state.car);
+                    this.props.addCar(this.state.car);
                   }
                   else {
                     badVin = true;
@@ -92,7 +97,8 @@ export class AddInventory extends Component{
   } 
   else {
      if(vinData) 
-     { console.log(vinData)
+     { 
+       console.log(vinData)
         if(vinData.Results[0].Make.toLowerCase() === this.state.car.make.toLowerCase())
         {
           console.log(vinData === this.state.car.make);
@@ -116,10 +122,6 @@ export class AddInventory extends Component{
     }
   }
 
-  handleUpload = (event) => {
-    
-  }
-
   render() {
     return (
       <div>
@@ -138,7 +140,7 @@ export class AddInventory extends Component{
                   <Form onSubmit={this.handleSubmit} autoComplete="off">
                     <Form.Group>
                       <Form.Label>VIN</Form.Label>
-                      <Form.Control name="vin" onChange={this.handleChange} minLength="17" maxLength="17"/>
+                      <Form.Control name="vin" onChange={this.handleChange} minLength="17" maxLength="17" required/>
                       <Form.Label>Year</Form.Label>
                       <Form.Control name="year" as="select" onChange={this.handleChange}>
                         <option>...</option>
@@ -149,7 +151,7 @@ export class AddInventory extends Component{
                         }
                       </Form.Control>
                       <Form.Label>Make</Form.Label>
-                      <Form.Control name="make" as="select" onChange={this.handleChange}>
+                      <Form.Control name="make" as="select" onChange={this.handleChange} required>
                         <option>...</option>
                         {this.props.apiMakes[0].Results.map((make, index) => {
                             return <option key={index} value={make.MakeID}> {make.MakeName} </option>
@@ -157,7 +159,7 @@ export class AddInventory extends Component{
                         }
                       </Form.Control>
                       <Form.Label>Model</Form.Label>
-                      <Form.Control name="model" as="select" onChange={this.handleChange}>
+                      <Form.Control name="model" as="select" onChange={this.handleChange} required>
                         <option>...</option>
                         {this.state.modelData.map((model, index) => {
                             return <option key={index} value={model.Model_Name}> {model.Model_Name} </option>
@@ -165,7 +167,7 @@ export class AddInventory extends Component{
                         }
                       </Form.Control>
                       <Form.Label>Color</Form.Label>
-                      <Form.Control name="color" as="select" onChange={this.handleChange} defaultValue="Choose...">
+                      <Form.Control name="color" as="select" onChange={this.handleChange} required>
                         <option>...</option>
                         <option value="blue">blue</option>
                         <option value="yellow">yellow</option>
@@ -173,7 +175,7 @@ export class AddInventory extends Component{
                         <option value="red">red</option>
                       </Form.Control>
                       <Form.Label>Input Image URL</Form.Label>
-                      <Form.Control name="image" onChange={this.handleChange} />
+                      <Form.Control name="image" onChange={this.handleChange}/>
                       {/* <div>
                         <Form.File name="image" label="Upload Car Picture(Max Size: 16MB)" onChange={this.handleChange} />
                         <Button variant="secondary" onClick={this.handleUpload}>Upload</Button>
