@@ -66,38 +66,40 @@ export class AddInventory extends Component{
                 if(vinData) {
                   if(vinData.Results[0].Make.toLowerCase() === this.state.car.make.toLowerCase())
                   {
+                    badVin = "";
                     this.props.addCar(this.state.car);
                   }
-                  else {
+                  else if (badVin === "") {
                     badVin = true;
                   }
                 }
-                else {
+                else if (badVin === ""){
                   badVin = true;
                 }
-              } else {
+              } else if (badVin === ""){
                 badVin = false;
               }
-            } else {
+            } else if (badVin === ""){
               badVin = false;
             }
-          } else {
+          } else if (badVin === ""){
             badVin = false;
           }
-        }else {
+        }else if (badVin === ""){
           badVin = false;
         }
-        if(badVin != ""){
-          console.log("alert1")
 
-          this.setState({
-            alertMessage: badVin ? "VIN is not valid" : "We are not accepting vehicles of this type at the moment",
-            alert:true
-          });
-        }
         return true;
       }
     )
+    if(badVin !== ""){
+      console.log("alert1")
+
+      this.setState({
+        alertMessage: badVin ? "VIN is not valid" : "We are not accepting vehicles of this type at the moment",
+        alert:true
+      });
+    }
   } 
   else {
      if(vinData) 
