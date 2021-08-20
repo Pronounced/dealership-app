@@ -13,9 +13,11 @@ import CarRules from './components/CarRules';
 import ContactUs from './components/ContactUs';
 import Layout from './components/Layout';
 import { Messages } from './components/Messages';
-import { Registration } from './components/Registration';
+import Registration from './components/Registration';
+import { setUsers } from './features/userSlice';
+import { connect } from 'react-redux';
 
-export default class App extends Component {
+class App extends Component {
   static displayName = App.name;
 
   state = {
@@ -167,9 +169,6 @@ export default class App extends Component {
     this.getData(`${this.props.connection}getcars`).then((data) => {
       this.setState({ ...this.state, inventoryData: data, loading: false });
     });
-    this.getData(`${this.props.connection}getusers`).then((data) => {
-      this.setState({ ...this.state, userData: data, loading: false });
-    });
     this.getData(`${this.props.connection}getrules`).then((data) => {
       this.setState({ ...this.state, carRules: data, loading: false });
     });
@@ -179,6 +178,9 @@ export default class App extends Component {
     this.getData(`${this.props.connection}getmessages`).then((data) => {
       this.setState({ ... this.state, messages: data, loading: false});
     })
+    this.getData(`${this.props.connection}getusers`).then((data) => {
+      this.props.setUsers(data);
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -199,7 +201,7 @@ export default class App extends Component {
               <UserInventory getData={this.getData} apiMakes={apiMakes} rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
             </Route>
             <Route path="/Customers">
-              <Customers users={userData} isAdmin={isAdmin}></Customers>
+              <Customers users={this.props.userData} isAdmin={isAdmin}></Customers>
             </Route>
             <Route path="/CarRules">
               <CarRules rules={carRules} isAdmin={isAdmin} deleteCarRule={this.deleteCarRule} addCarRule={this.addCarRule}/>
@@ -211,10 +213,10 @@ export default class App extends Component {
               <Messages messages={messages}/>
             </Route>
             <Route path="/Registration">
-              <Registration userData={userData} addUser={this.addUser}/>
+              <Registration userData={this.props.userData} />
             </Route>
             <Route path="/">
-              <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />
+              <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={this.props.userData} />
             </Route>
           </Switch>
         </Layout>
@@ -222,3 +224,17 @@ export default class App extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => { 
+  return{
+    userData: state.user.userData,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    setUsers: input => dispatch(setUsers(input)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

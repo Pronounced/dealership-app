@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Container, Card, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { addUser } from '../features/userSlice';
 
-
-export class Registration extends Component{
+class Registration extends Component{
   static displayName = Registration.name;
 
   state = {
@@ -23,7 +24,7 @@ export class Registration extends Component{
       }
     });
     if(!error) {
-      return this.props.addUser(this.state.user);
+      this.props.addUser(this.state.user);
     } else{
       event.preventDefault();
     }
@@ -76,3 +77,11 @@ export class Registration extends Component{
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addUser: input => dispatch(addUser(input)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Registration);
