@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Card, Container, Alert} from 'react-bootstrap';
-import vinGenerator from 'vin-generator';
 import years from '../years.json'
-                              
-export class AddInventory extends Component{
+import { connect } from 'react-redux';
+import { addCar } from '../features/inventorySlice';
+
+class AddInventory extends Component{
   static displayName = AddInventory.name;
 
   state = {
@@ -205,3 +206,17 @@ export class AddInventory extends Component{
   }
 }
 
+const mapStateToProps = (state) => { 
+  return{
+    currentUser: state.user.currentUser,
+    isAdmin: state.user.isAdmin,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    addCar: input => dispatch(addCar(input)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddInventory);

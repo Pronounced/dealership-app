@@ -1,8 +1,10 @@
 import React from "react";
 import { Button, Card, Form, Container, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import { updateLoginStatus } from "../features/userSlice";
 
-export default class Login extends React.Component {
+class Login extends React.Component {
 
   state={ 
     username: "",
@@ -30,9 +32,9 @@ export default class Login extends React.Component {
           {
             if(element.isAdmin)
             {
-              this.props.updateLoginStatus(true,true,element.username);
+              this.props.updateLoginStatus([true,true,element.username]);
             } else {
-              this.props.updateLoginStatus(true,false,element.username);
+              this.props.updateLoginStatus([true,false,element.username]);
             }
             auth = true;
           }
@@ -81,3 +83,16 @@ export default class Login extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => { 
+  return{
+    isAdmin: state.user.isAdmin,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateLoginStatus: input => dispatch(updateLoginStatus(input)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

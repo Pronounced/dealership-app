@@ -14,11 +14,11 @@ const connection = `http://localhost:3002/`;
 
 
 ReactDOM.render(
-  <BrowserRouter basename={baseUrl}>
-    <Provider store={store}>
-      <App connection={connection}/>
-    </Provider>
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter basename={baseUrl}>
+        <App connection={connection}/>
+    </BrowserRouter>
+  </Provider>,
   rootElement);
 
 registerServiceWorker();
