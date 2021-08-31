@@ -42,7 +42,7 @@ class UserInventory extends Component {
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  <AddInventory getData={this.props.getData} apiMakes={this.props.apiMakes} rules={this.props.rules}/>
+                  <AddInventory apiMakes={this.props.apiMakes}/>
                 </Card.Body>
               </Accordion.Collapse>
             </Card>

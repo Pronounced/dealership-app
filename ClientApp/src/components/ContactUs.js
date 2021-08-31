@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Card, Form, CardColumns } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { addMessage } from '../features/messageSlice';
 
-export default class ContactUs extends Component {
+class ContactUs extends Component {
   static displayName = ContactUs.name;
 
   state = {
@@ -66,3 +68,11 @@ export default class ContactUs extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    addMessage: input => dispatch(addMessage(input)),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(ContactUs);
