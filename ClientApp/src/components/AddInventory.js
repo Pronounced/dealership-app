@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Form, Row, Col, Card, Container, Alert} from 'react-bootstrap';
-import vinGenerator from 'vin-generator';
 import years from '../years.json'
-                              
-export class AddInventory extends Component{
+import { connect } from 'react-redux';
+import { addCar } from '../features/inventorySlice';
+import { getData } from '../actions/crud';
+
+class AddInventory extends Component{
   static displayName = AddInventory.name;
 
   state = {
@@ -40,7 +42,7 @@ export class AddInventory extends Component{
     });
     if(target.name === "make" || target.name === "year")
     {
-      this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${carState.make}/modelyear/${carState.year}?format=json`)
+      getData(`https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/${carState.make}/modelyear/${carState.year}?format=json`)
       .then((data) => {
         console.log(data);
         this.setState({...this.state, modelData: data.Results});
@@ -51,10 +53,10 @@ export class AddInventory extends Component{
   handleSubmit = async(event) => {
     event.preventDefault();
     var badVin = "";
-    var vinData = await this.props.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`);
+    var vinData = await getData(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/${this.state.car.vin}?format=json`);
     console.log("vin",vinData)
     if(!this.props.isAdmin) {
-      this.props.rules.map((rule) => {
+      this.props.rulesData.map((rule) => {
         if(rule.startYear <= parseInt(this.state.car.year) && rule.endYear >= parseInt(this.state.car.year)){
           if(rule.make.toLowerCase() === this.state.car.make.toLowerCase())
           {
@@ -205,3 +207,18 @@ export class AddInventory extends Component{
   }
 }
 
+const mapStateToProps = (state) => { 
+  return{
+    currentUser: state.user.currentUser,
+    isAdmin: state.user.isAdmin,
+    rulesData: state.rules.rulesData
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    addCar: input => dispatch(addCar(input)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddInventory);
