@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { updateLoginStatus } from '../features/userSlice';
 
-export default class Layout extends Component {
+class Layout extends Component {
   static displayName = Layout.name;
 
   render () {
@@ -19,7 +21,7 @@ export default class Layout extends Component {
             {this.props.isAdmin && <Nav.Link as={Link} to="/Customers">Customers</Nav.Link>}
             {this.props.isAdmin && <Nav.Link as={Link} to="/CarRules">Acceptance Rules</Nav.Link>}
             {this.props.isAdmin && <Nav.Link as={Link} to="/Messages">Messages</Nav.Link>}
-            <Nav.Link as={Link} to="/Login" onClick={() => this.props.updateLoginStatus(false,false,null)}>Logout</Nav.Link>
+            <Nav.Link as={Link} to="/Login" onClick={() => this.props.updateLoginStatus([false,false,null])}>Logout</Nav.Link>
           </Nav>
           </Navbar.Collapse>
         </Navbar> }
@@ -28,3 +30,18 @@ export default class Layout extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => { 
+  return{
+    isLoggedIn: state.user.isLoggedIn,
+    isAdmin: state.user.isAdmin,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateLoginStatus: input => dispatch(updateLoginStatus(input)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Accordion, Card, Button } from 'react-bootstrap';
-import { AddInventory } from './AddInventory';
+import AddInventory from './AddInventory';
+import { connect } from 'react-redux';
 
-export class UserInventory extends Component {
+class UserInventory extends Component {
   static displayName = UserInventory.name;
 
   render() {
@@ -41,7 +42,7 @@ export class UserInventory extends Component {
               </Card.Header>
               <Accordion.Collapse eventKey="0">
                 <Card.Body>
-                  <AddInventory getData={this.props.getData} apiMakes={this.props.apiMakes} isAdmin={this.props.isAdmin} rules={this.props.rules} addCar={this.props.addCar} currentUser={this.props.currentUser}/>
+                  <AddInventory apiMakes={this.props.apiMakes}/>
                 </Card.Body>
               </Accordion.Collapse>
             </Card>
@@ -50,3 +51,13 @@ export class UserInventory extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => { 
+  return{
+    isLoggedIn: state.user.isLoggedIn,
+    isAdmin: state.user.isAdmin,
+    currentUser: state.user.currentUser
+  }
+}
+
+export default connect(mapStateToProps)(UserInventory);

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Table, Button, Card, Accordion, Image, Col } from 'react-bootstrap';
-import { AddInventory } from './AddInventory';
+import AddInventory from './AddInventory';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { connect } from 'react-redux';
+import { updateCar } from '../features/inventorySlice';
 
-export class Inventory extends Component {
+class Inventory extends Component {
   static displayName = Inventory.name;
 
   render() {
@@ -36,8 +38,8 @@ export class Inventory extends Component {
                 {this.props.isAdmin && <td>{car.isApproved.toString()}</td>}
                 {this.props.isAdmin && 
                   <td>
-                    <Button onClick={() => this.props.updateCar(car.vin, true)}>Approve</Button>
-                    <Button onClick={() => this.props.updateCar(car.vin, false)}>Deny</Button>
+                    <Button onClick={() => this.props.updateCar([car.vin, true])}>Approve</Button>
+                    <Button onClick={() => this.props.updateCar([car.vin, false])}>Deny</Button>
                   </td>
                 }
                 <td>{car.vin === this.props.valueKey && this.props.valueData}</td>
@@ -64,7 +66,7 @@ export class Inventory extends Component {
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
-                    <AddInventory getData={this.props.getData} apiMakes={this.props.apiMakes} isAdmin={this.props.isAdmin} addCar={this.props.addCar} currentUser={this.props.currentUser}/>
+                    <AddInventory apiMakes={this.props.apiMakes}/>
                   </Card.Body>
                 </Accordion.Collapse>
               </Card>
@@ -74,3 +76,19 @@ export class Inventory extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => { 
+  return{
+    isLoggedIn: state.user.isLoggedIn,
+    isAdmin: state.user.isAdmin,
+    currentUser: state.user.currentUser
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCar: input => dispatch(updateCar(input)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Inventory);

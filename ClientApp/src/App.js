@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Inventory } from './components/Inventory';
-import { UserInventory } from './components/UserInventory';
+import Inventory from './components/Inventory';
+import UserInventory from './components/UserInventory';
 import Login  from './components/Login';
 import {
   BrowserRouter as Router,
@@ -13,94 +13,22 @@ import CarRules from './components/CarRules';
 import ContactUs from './components/ContactUs';
 import Layout from './components/Layout';
 import { Messages } from './components/Messages';
-import { Registration } from './components/Registration';
+import Registration from './components/Registration';
+import { setUsers } from './features/userSlice';
+import { setInventory } from './features/inventorySlice';
+import { setRules } from './features/rulesSlice';
+import { connect } from 'react-redux';
+import { getData } from './actions/crud';
+import { setMessages } from './features/messageSlice';
 
-export default class App extends Component {
+class App extends Component {
   static displayName = App.name;
 
   state = {
-    showForm: false,
-    inventoryData: [],
-    userData: [],
-    nCar: [],
-    isLoggedIn: false,
-    isAdmin: false,
-    currentUser: null,
-    carRules: [],
-    postArray: [],
-    url: null,
     key: "VA_DEMO_KEY",
     valueData: "",
     valueKey: null,
     apiMakes: [],
-    apiModels: [],
-    years:[],
-    messages: [],
-  }
-
-  handleAdd = () => {
-    this.setState({
-      ...this.state,
-      showForm: !this.state.showForm,
-    });
-  };
-
-  updateCar = (vin, status) => {
-    let copyData = this.state.inventoryData;
-    this.setState({
-      ...this.state,
-      inventoryData: copyData.map(car => {
-        if(car.vin === vin)
-        {
-          car.isApproved = status;
-        }
-        return car
-      })
-    });
-    this.putData(copyData.filter(car => car.vin === vin)[0], `${this.props.connection}putcar`);
-  }
-
-  addCar = (car) => {
-    this.setState({
-      inventoryData: this.state.inventoryData.concat(car),
-      showForm: false,
-      loading: true,
-    });
-    this.postData(car, `${this.props.connection}postcar`)
-  };
-
-  addCarRule = (rule) => {
-    this.setState({
-      carRules: this.state.carRules.concat(rule),
-      loading: true,
-    });
-    this.postData(rule, `${this.props.connection}postrule`)
-  };
-
-  addMessage = (message) => {
-    this.setState({
-      messages: this.state.messages.concat(message),
-      loading: true,
-    });
-    this.postData(message, `${this.props.connection}postmessage`)
-  }
-
-  addUser = (user) => {
-    this.setState({
-      userData: this.state.userData.concat(user),
-      loading: true,
-    });
-    this.postData(user, `${this.props.connection}postuser`)
-  };
-
-  deleteCarRule = (rule) => {
-    let copyData = this.state.carRules;
-    var index = copyData.indexOf(rule);
-    copyData.splice(index, 1);
-    this.setState({
-      carRules: copyData,
-    })
-    this.deleteData(rule, `${this.props.connection}deleterule`)
   }
 
   getMarketValue = async (car) => {
@@ -115,106 +43,53 @@ export default class App extends Component {
     }); 
   }
 
-  getData = async (url) => {
-    const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response.json();
-  };
-
-  postData = async (data, url) => {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    return response;
-  };
-
-  putData = async (data, url) => {
-    console.log("putting");
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    return response;
-  }
-
-  deleteData = async (data, url) => {
-    console.log("deleting");
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    return response;
-  }
-
-  updateLoginStatus = (status, isAdmin, user) => {
-    console.log("Test Login");
-    this.setState({
-      ...this.state,
-      isLoggedIn: status,
-      isAdmin: isAdmin,
-      currentUser: user,
-    });
-  }
-
   componentDidMount() {
-    this.getData(`${this.props.connection}getcars`).then((data) => {
-      this.setState({ ...this.state, inventoryData: data, loading: false });
+    getData(`${this.props.connection}getcars`).then((data) => {
+      this.props.setInventory(data);
     });
-    this.getData(`${this.props.connection}getusers`).then((data) => {
-      this.setState({ ...this.state, userData: data, loading: false });
+    getData(`${this.props.connection}getrules`).then((data) => {
+      this.props.setRules(data);
     });
-    this.getData(`${this.props.connection}getrules`).then((data) => {
-      this.setState({ ...this.state, carRules: data, loading: false });
-    });
-    this.getData(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json`).then((data) => {
+    getData(`https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json`).then((data) => {
       this.setState({...this.state, apiMakes: [data], loading: false });
     });
-    this.getData(`${this.props.connection}getmessages`).then((data) => {
-      this.setState({ ... this.state, messages: data, loading: false});
+    getData(`${this.props.connection}getmessages`).then((data) => {
+      this.props.setMessages(data);
     })
+    getData(`${this.props.connection}getusers`).then((data) => {
+      this.props.setUsers(data);
+    });
   }
-
-  componentDidUpdate(prevProps, prevState) {
-
-  }
-  
 
   render() {
-    const { messages, valueKey, inventoryData, userData, isAdmin, view, currentUser, carRules, isLoggedIn, valueData, apiMakes } = this.state;
+    const { valueKey, valueData, apiMakes } = this.state;
     return(
       <Router>
-        <Layout updateLoginStatus={this.updateLoginStatus} isLoggedIn={isLoggedIn} isAdmin={isAdmin}>
+        <Layout>
           <Switch>
             <Route path="/Inventory" >
-              <Inventory getData={this.getData} apiMakes={apiMakes} valueKey={valueKey} valueData={valueData} getMarketValue={this.getMarketValue} currentUser={currentUser} updateCar={this.updateCar} addCar={this.addCar} handleAdd={this.handleAdd} isAdmin={isAdmin} inventory={inventoryData} />
+              <Inventory apiMakes={apiMakes} valueKey={valueKey} valueData={valueData} getMarketValue={this.getMarketValue} inventory={this.props.inventoryData} />
             </Route>
             <Route path="/UserInventory" >
-              <UserInventory getData={this.getData} apiMakes={apiMakes} rules={carRules} inventory={inventoryData} currentUser={currentUser} view={view} addCar={this.addCar}/>
+              <UserInventory apiMakes={apiMakes} inventory={this.props.inventoryData}/>
             </Route>
             <Route path="/Customers">
-              <Customers users={userData} isAdmin={isAdmin}></Customers>
+              <Customers users={this.props.userData}/>
             </Route>
             <Route path="/CarRules">
-              <CarRules rules={carRules} isAdmin={isAdmin} deleteCarRule={this.deleteCarRule} addCarRule={this.addCarRule}/>
+              <CarRules rules={this.props.rulesData}/>
             </Route>
             <Route path="/ContactUs">
-              <ContactUs addMessage={this.addMessage}/>
+              <ContactUs addMessage={this.props.addMessage}/>
             </Route>
             <Route path="/Messages">
-              <Messages messages={messages}/>
+              <Messages messages={this.props.messageData}/>
             </Route>
             <Route path="/Registration">
-              <Registration userData={userData} addUser={this.addUser}/>
+              <Registration userData={this.props.userData} />
             </Route>
             <Route path="/">
-              <Login updateLoginStatus={this.updateLoginStatus} isAdmin={isAdmin} users={userData} />
+              <Login users={this.props.userData} />
             </Route>
           </Switch>
         </Layout>
@@ -222,3 +97,23 @@ export default class App extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => { 
+  return{
+    userData: state.user.userData,
+    inventoryData: state.inventory.inventoryData,
+    rulesData: state.rules.rulesData,
+    messageData: state.message.messageData
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return{
+    setUsers: input => dispatch(setUsers(input)),
+    setInventory: input => dispatch(setInventory(input)),
+    setRules: input => dispatch(setRules(input)),
+    setMessages: input => dispatch(setMessages(input))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
