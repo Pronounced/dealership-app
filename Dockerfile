@@ -1,8 +1,8 @@
 FROM node:latest
 
-WORKDIR /ClientApp
+WORKDIR /.
 
-ENV PATH /ClientApp/node_modules/.bin:$PATH
+ENV PATH /node_modules/.bin:$PATH
 
 COPY package*.json ./
 
